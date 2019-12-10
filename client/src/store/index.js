@@ -10,40 +10,72 @@ export default new Vuex.Store({
   state: {
     todayList: [],
     isLoading: true,
-    editTodo: {}
+    editTodo: {},
+    projects : []
   },
   mutations: {
-    SET_EDIT_TODO (state, payload) {
+    // mutations for project
+    SET_PROJECTS(state, payload) {
+      state.projects =  payload
+    },
+    // mutations for task
+    SET_EDIT_TODO(state, payload) {
       state.editTodo = payload
       state.editTodo.date = moment(payload.dueDate).format('YYYY-M-D')
       state.editTodo.time = moment(payload.dueDate).format('hh:mm')
       console.log(state.editTodo.date, state.editTodo.time, payload.dueDate.slice(0, 'yyyy-mm-dd'.length))
     },
-    SET_TODAY_LIST (state, payload) {
+    SET_TODAY_LIST(state, payload) {
       console.log(state.isLoading, 'ini laman isLoading')
       state.todayList = payload
       state.isLoading = false
     },
-    SET_ISLOADING (state, payload) {
+    SET_ISLOADING(state, payload) {
       state.isLoading = payload
     }
   },
   actions: {
-    editTodo ({
+    //action for project
+    getAllProject({
+      commit ,
+    }) {
+      console.log('masuk get all projects')
+      commit('SET_ISLOADING', true)
+      server.get(`/project`, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        .then(({data}) => {
+          commit('SET_PROJECTS', data)
+          commit('SET_ISLOADING', false)
+        })
+        .catch(err => {
+          Swal.fire({
+            title: 'Ops...',
+            icon: 'error',
+            text: err.response.data.message
+          })
+        })
+    },
+
+    //actions for todo
+
+    editTodo({
       commit,
       state,
       dispatch
     }) {
       commit('SET_ISLOADING', true)
       server.put(`/todo/${state.editTodo._id}`, {
-        title: state.editTodo.title,
-        dueDate: new Date(`${state.editTodo.date} ${state.editTodo.time}`),
-        description: state.editTodo.description
-      }, {
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      })
+          title: state.editTodo.title,
+          dueDate: new Date(`${state.editTodo.date} ${state.editTodo.time}`),
+          description: state.editTodo.description
+        }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
         .then(({
           data
         }) => {
@@ -64,7 +96,7 @@ export default new Vuex.Store({
           dispatch('getTodayList')
         })
     },
-    deleteTodo ({
+    deleteTodo({
       commit,
       dispatch
     }, todo) {
@@ -80,10 +112,10 @@ export default new Vuex.Store({
         if (result.value) {
           commit('SET_ISLOADING', true)
           server.delete(`/todo/${todo._id}`, {
-            headers: {
-              token: localStorage.getItem('token')
-            }
-          })
+              headers: {
+                token: localStorage.getItem('token')
+              }
+            })
             .then(({
               data
             }) => {
@@ -106,7 +138,7 @@ export default new Vuex.Store({
         }
       })
     },
-    addTodo ({
+    addTodo({
       commit,
       dispatch
     }, payload) {
@@ -139,7 +171,7 @@ export default new Vuex.Store({
           dispatch('getTodayList')
         })
     },
-    updateTodoStatus ({
+    updateTodoStatus({
       commit,
       dispatch
     }, payload) {
@@ -156,12 +188,12 @@ export default new Vuex.Store({
         update = true
       }
       server.patch(`/todo/${payload._id}/status`, {
-        status: update
-      }, {
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      })
+          status: update
+        }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
         .then(({
           data
         }) => {
@@ -193,16 +225,16 @@ export default new Vuex.Store({
           dispatch('getTodayList')
         })
     },
-    getTodayList ({
+    getTodayList({
       commit
     }) {
       commit('SET_ISLOADING', true)
       console.log('masuk get today list')
       return server.get('/todo', {
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      })
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
         .then(({
           data
         }) => {

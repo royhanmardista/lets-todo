@@ -21,14 +21,14 @@
         </ul>
       </nav>
     </div>
-    <div class="container ">
+    <div class="container">
       <div class="row">
         <div class="col-md-2 navbar-expand-md pt-4">
           <b-navbar-toggle class target="side-collapse">
             <i class="fa fa-align-justify"></i>
           </b-navbar-toggle>
           <b-collapse id="side-collapse" is-nav>
-            <ul>
+            <ul class="">
               <li class="mb-2">
                 <router-link to="/home/today">
                   <i class="fa fa-calendar-o"></i> Today
@@ -40,9 +40,12 @@
                 </router-link>
               </li>
               <li class="mb-2">
-                <router-link to="/home/project">
-                  <i class="fa fa-list-ul text-warning"></i> Project
-                </router-link>
+                <div class="d-flex justify-content-between">
+                  <router-link to="/home/project">
+                    <i class="fa fa-list-ul text-warning"></i> Projects
+                  </router-link>                  
+                </div>
+                <!-- Elements to collapse -->                
               </li>
             </ul>
           </b-collapse>
@@ -56,31 +59,50 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  data () {
+  computed: {
+    ...mapState(["isLoading", "projects"])
+  },
+  data() {
     return {
       home: true
-    }
+    };
   },
   methods: {
-    logout () {
-      localStorage.removeItem('token')
-      this.$router.push('/')
+    async getAllProject() {
+      console.log("masuk get all project home");
+      await this.$store.dispatch("getAllProject");
     },
-    checkLoginStatus () {
-      if (!localStorage.getItem('token')) {
-        this.$router.push('/')
+    logout() {
+      localStorage.removeItem("token");
+      this.$router.push("/");
+    },
+    checkLoginStatus() {
+      if (!localStorage.getItem("token")) {
+        this.$router.push("/");
       }
     }
   },
-  crated () {
-    this.checkLoginStatus()
+  created() {
+    this.checkLoginStatus();
+    this.getAllProject();
   }
-
-}
+};
 </script>
 
 <style>
+.addproject {
+  color: cadetblue;
+  cursor: pointer;
+}
+
+.addproject:hover {
+  color: gold
+}
+
+
 #logoutbutton:hover {
   color: whitesmoke;
 }
@@ -97,7 +119,7 @@ a.router-link-exact-active {
   padding: 0px;
 }
 
-#display  {
+#display {
   min-height: 900px;
 }
 </style>
