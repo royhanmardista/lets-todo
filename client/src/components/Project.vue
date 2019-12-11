@@ -56,9 +56,9 @@
                   <i class="fa fa-user"></i> Add Member
                 </a>
 
-                <a class="dropdown-item" href="#">
+                <button class="dropdown-item" @click.prevent="deleteProject(project)">
                   <i class="fa fa-trash"></i> Delete Project
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -199,6 +199,9 @@ export default {
     return {};
   },
   methods: {
+    async deleteProject(project) {
+      await this.$store.dispatch('deleteProject', project)
+    },
     showAddTodoToProject(project) {
       this.$store.commit("SET_ADD_TODO_TO_PROJECT", project);
     },

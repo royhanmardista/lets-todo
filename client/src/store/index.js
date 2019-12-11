@@ -44,25 +44,75 @@ export default new Vuex.Store({
   },
   actions: {
     //action for project
-    async createProject({ commit, dispatch }, project) {
+
+    async deleteProject({
+      commit,
+      dispatch
+    }, project) {
+      console.log('masuk delete project')
+      const confirm = await Swal.fire({
+        title: 'Are you sure you want to delete this poject?',
+        text: "Deleting this project mean deleting all the tasks in this project, and you cant revert it!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
+      if (confirm.value) {
+        commit('SET_ISLOGIN', true)
+        try {
+          const {
+            data
+          } = await server.delete(`/project/${project._id}`, {
+            headers: {
+              token: localStorage.getItem('token')
+            }
+          })
+          Swal.fire(
+            'Success!',
+            `${data.message}`,
+            'success'
+          )
+        } catch(err) {
+          Swal.fire({
+            title: 'Ops...',
+            icon: 'error',
+            text: err.response.data.message
+          })
+        } finally {
+          dispatch('getAllProject')
+        }
+      }
+    },
+    async createProject({
+      commit,
+      dispatch
+    }, project) {
       console.log('masuk create project')
-      let { title, dueDate, description } = project
+      let {
+        title,
+        dueDate,
+        description
+      } = project
       commit('SET_ISLOADING', true)
       try {
-        const { data } = await server.post('/project', {
+        const {
+          data
+        } = await server.post('/project', {
           title,
           dueDate,
           description
         }, {
-          headers : {
-            token : localStorage.getItem('token')
+          headers: {
+            token: localStorage.getItem('token')
           }
         })
         Swal.fire(
           'Success!',
           `${data.message}`,
           'success'
-        )        
+        )
       } catch (err) {
         Swal.fire({
           title: 'Ops...',
@@ -71,7 +121,7 @@ export default new Vuex.Store({
         })
       } finally {
         dispatch('getAllProject')
-      }    
+      }
     },
     deleteTodoProject({
       commit,
@@ -88,7 +138,7 @@ export default new Vuex.Store({
       }).then(function (result) {
         if (result.value) {
           commit('SET_ISLOADING', true)
-          server.put(`/project/${todo.projectId}/delete/todo/${todo._id}`,{}, {
+          server.put(`/project/${todo.projectId}/delete/todo/${todo._id}`, {}, {
               headers: {
                 token: localStorage.getItem('token')
               }
