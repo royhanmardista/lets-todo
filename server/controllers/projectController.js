@@ -112,7 +112,8 @@ class projectController {
     }
 
     static addTodo(req, res, next) {
-        let { title, dueDate, description } = req.body        
+        let { title, dueDate, description } = req.body    
+        console.log('masuk addTodo', title, dueDate, description)    
         Todo.
             create({
                 title : title,

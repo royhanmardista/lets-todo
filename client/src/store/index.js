@@ -11,12 +11,20 @@ export default new Vuex.Store({
     todayList: [],
     isLoading: true,
     editTodo: {},
-    projects : []
+    projects: [],
+    project: {}
   },
   mutations: {
     // mutations for project
+    // SET_TODO_TO_PROJECT(state, palyload) {
+    //   state.project.todos.push(payload)
+    // },
+    SET_ADD_TODO_TO_PROJECT(state, payload) {
+      console.log('masuk SET_ADD_TODO_TO_PROJECT')
+      state.project = payload
+    },
     SET_PROJECTS(state, payload) {
-      state.projects =  payload
+      state.projects = payload
     },
     // mutations for task
     SET_EDIT_TODO(state, payload) {
@@ -36,8 +44,94 @@ export default new Vuex.Store({
   },
   actions: {
     //action for project
+
+    deleteTodoProject({
+      commit,
+      dispatch
+    }, todo) {
+      Swal.fire({
+        title: 'Are you sure you want to delete this task?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          commit('SET_ISLOADING', true)
+          server.put(`/project/${todo.projectId}/delete/todo/${todo._id}`,{}, {
+              headers: {
+                token: localStorage.getItem('token')
+              }
+            })
+            .then(({
+              data
+            }) => {
+              Swal.fire(
+                'Deleted!',
+                `${data.message}`,
+                'success'
+              )
+            })
+            .catch(err => {
+              Swal.fire({
+                title: 'Ops...',
+                icon: 'error',
+                text: err.response.data.message
+              })
+            })
+            .finally(() => {
+              dispatch('getAllProject')
+            })
+        }
+      })
+    },
+    addTodoToProject({
+      commit,
+      dispatch
+    }, payload) {
+      console.log('masuk addTodoToProject', payload)
+      commit('SET_ISLOADING', true)
+      server.put(`/project/${payload.projectId}/todo`, {
+          title: payload.title,
+          dueDate: payload.dueDate,
+          description: payload.description,
+        }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        .then(({
+          data
+        }) => {
+          Swal.fire(
+            'Success!',
+            `${data.message}`,
+            'success'
+          )
+        })
+        .catch(err => {
+          if (Array.isArray(err.response.data.message)) {
+            Swal.fire({
+              title: 'Ops...',
+              icon: 'error',
+              text: err.err.response.data.message.join(', ')
+            })
+          } else {
+            Swal.fire({
+              title: 'Ops...',
+              icon: 'error',
+              text: err.response.data.message
+            })
+          }
+        })
+        .finally(() => {
+          dispatch('getAllProject')
+        })
+    },
     getAllProject({
-      commit ,
+      commit,
     }) {
       console.log('masuk get all projects')
       commit('SET_ISLOADING', true)
@@ -46,7 +140,9 @@ export default new Vuex.Store({
             token: localStorage.getItem('token')
           }
         })
-        .then(({data}) => {
+        .then(({
+          data
+        }) => {
           commit('SET_PROJECTS', data)
           commit('SET_ISLOADING', false)
         })
@@ -128,7 +224,7 @@ export default new Vuex.Store({
             .catch(err => {
               Swal.fire({
                 title: 'Ops...',
-                type: 'error',
+                icon: 'error',
                 text: err.response.data.message
               })
             })
@@ -187,7 +283,11 @@ export default new Vuex.Store({
       } else {
         update = true
       }
-      server.patch(`/todo/${payload._id}/status`, {
+      let url = `/todo/${payload._id}/status`
+      if (payload.projectId) {
+        url = `/project/${payload.projectId}/status/${payload._id}`
+      }
+      server.patch(url, {
           status: update
         }, {
           headers: {
@@ -217,12 +317,16 @@ export default new Vuex.Store({
           console.log(err)
           Swal.fire({
             title: 'Ops...',
-            type: 'error',
+            icon: 'error',
             text: err.response.data.message
           })
         })
         .finally(() => {
-          dispatch('getTodayList')
+          if (payload.projectId) {
+            dispatch('getAllProject')
+          } else {
+            dispatch('getTodayList')
+          }
         })
     },
     getTodayList({
