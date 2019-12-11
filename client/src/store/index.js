@@ -20,7 +20,6 @@ export default new Vuex.Store({
     //   state.project.todos.push(payload)
     // },
     SET_ADD_TODO_TO_PROJECT(state, payload) {
-      console.log('masuk SET_ADD_TODO_TO_PROJECT')
       state.project = payload
     },
     SET_PROJECTS(state, payload) {
@@ -30,11 +29,9 @@ export default new Vuex.Store({
     SET_EDIT_TODO(state, payload) {
       state.editTodo = payload
       state.editTodo.date = moment(payload.dueDate).format('YYYY-M-D')
-      state.editTodo.time = moment(payload.dueDate).format('hh:mm')
-      console.log(state.editTodo.date, state.editTodo.time, payload.dueDate.slice(0, 'yyyy-mm-dd'.length))
+      state.editTodo.time = moment(payload.dueDate).format('HH:mm')
     },
     SET_TODAY_LIST(state, payload) {
-      console.log(state.isLoading, 'ini laman isLoading')
       state.todayList = payload
       state.isLoading = false
     },
@@ -74,7 +71,7 @@ export default new Vuex.Store({
             `${data.message}`,
             'success'
           )
-        } catch(err) {
+        } catch (err) {
           Swal.fire({
             title: 'Ops...',
             icon: 'error',
@@ -235,13 +232,17 @@ export default new Vuex.Store({
 
     //actions for todo
 
-    editTodo({
+    updateTodo({
       commit,
       state,
       dispatch
     }) {
       commit('SET_ISLOADING', true)
-      server.put(`/todo/${state.editTodo._id}`, {
+      let url = `/todo/${state.editTodo._id}`
+      if (state.editTodo.projectId) {
+        url = `/project/${state.editTodo.projectId}/todo/${state.editTodo._id}`
+      }
+      server.put(url, {
           title: state.editTodo.title,
           dueDate: new Date(`${state.editTodo.date} ${state.editTodo.time}`),
           description: state.editTodo.description

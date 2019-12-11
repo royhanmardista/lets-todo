@@ -3,7 +3,7 @@
     <b-modal
       id="modal-update-todo"
       ref="modal"
-      title="Update Task To Your List"
+      title="Update Your Task "
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -74,7 +74,7 @@ export default {
       if (!this.checkFormValidity()) {
         return
       }
-      this.$store.dispatch('editTodo')
+      this.$store.dispatch('updateTodo')
       this.$nextTick(() => {
         this.$refs.modal.hide()
       })
