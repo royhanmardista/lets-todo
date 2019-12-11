@@ -44,7 +44,35 @@ export default new Vuex.Store({
   },
   actions: {
     //action for project
-
+    async createProject({ commit, dispatch }, project) {
+      console.log('masuk create project')
+      let { title, dueDate, description } = project
+      commit('SET_ISLOADING', true)
+      try {
+        const { data } = await server.post('/project', {
+          title,
+          dueDate,
+          description
+        }, {
+          headers : {
+            token : localStorage.getItem('token')
+          }
+        })
+        Swal.fire(
+          'Success!',
+          `${data.message}`,
+          'success'
+        )        
+      } catch (err) {
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
+      } finally {
+        dispatch('getAllProject')
+      }    
+    },
     deleteTodoProject({
       commit,
       dispatch

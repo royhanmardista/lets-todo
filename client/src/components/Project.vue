@@ -6,8 +6,16 @@
       </div>
     </div>
     <div v-if="!isLoading" class="container-fluid">
-      <h3>All Projects</h3>
-      <p>You have {{projects.length}} projects in total</p>
+      <div class="d-flex justify-content-between">
+        <div>
+          <h3>All Projects</h3>
+          <p>You have {{projects.length}} projects in total</p>
+        </div>
+        <div>
+          <button class="btn btn-outline-success" v-b-modal.modal-create-project><i class="fa fa-plus-circle"></i> Create Project</button>
+        </div>
+      </div>
+
       <div class="row border-bottom pt-2" v-for="project in projects" :key="project._id">
         <div class="d-flex justify-content-between w-100">
           <h5 class="btn projectlist" v-b-toggle="project._id">
@@ -21,7 +29,7 @@
                 {{project.members.length}} members
               </p>
             </div>
-            <div class="dropdown">
+            <div class="dropleft">
               <button
                 class="btn"
                 type="button"
@@ -68,16 +76,19 @@
               :key="member._id"
             >
               <div class="container-fluid border rounded p-2 mb-1">
-                <div class="row">
-                  <div class="col-md-3 col-3 d-flex flex-col pr-0">
+                <div class="row d-flex justify-content-between">
+                  <div class="col-md-3 col-2 col-sm-2 pr-0 d-flex">
                     <b-img :src="member.photo" class="w-100 rounded" alt rounded="circle"></b-img>
                   </div>
-                  <div class="col-md-7 col-7 col-sm-7 hideOverflow" style="font-size:0.9rem">
+                  <div
+                    class="col-md-7 col-8 col-sm-8 hideOverflow d-flex flex-column justify-content-between"
+                    style="font-size:0.9rem"
+                  >
                     <div style="font-weight: bold">{{member.username}}</div>
                     <div>{{member.email}}</div>
                   </div>
                   <div
-                    class="col-md-1 col-1 col-sm-1 btn d-flex"
+                    class="col-md-2 col-2 col-sm-2 d-flex flex-column justify-content-center btn"
                     v-b-popover.hover.top="'remove member'"
                     id="deleteMember"
                   >
@@ -101,7 +112,7 @@
               :key="todo._id"
             >
               <div
-              id="todoCard"
+                id="todoCard"
                 class="card-body border mt-1 mx-1 rounded p-2 shadow"
                 :class="{'uncomplete' : !todo.status, 'complete' : todo.status}"
               >
@@ -130,29 +141,30 @@
                   class="card-text border-top border-bottom py-2 text-white"
                 >{{todo.description}}</p>
                 <div class="d-flex justify-content-between">
-                  <button
+                  <a
                     v-b-popover.hover.top="'complete/uncomplete task'"
-                    :class="{'btn btn-success mr-1' : !todo.status, 'btn btn-danger mr-1' : todo.status}"
+                    class="text-white"
                     @click.prevent="completeTodoProject(todo)"
                   >
-                    <i :class="{'fa fa-check' : !todo.status, 'fa fa-times' : todo.status}"></i>
-                  </button>
-                  <button
+                    <i
+                      :class="{'fa fa-check-circle text-white' : !todo.status, 'fa fa-times-circle text-danger' : todo.status}"
+                    ></i>
+                  </a>
+                  <a
                     v-b-modal.modal-update-todo
                     v-b-popover.hover.top="'edit task'"
-                    class="btn btn-info mr-1"
                     @click.prevent="showEditModal(todo)"
                   >
-                    <i class="fa fa-pencil"></i>
-                  </button>
+                    <i class="fa fa-pencil-square-o text-dark"></i>
+                  </a>
 
-                  <button
+                  <a
                     v-b-popover.hover.top="'delete task'"
-                    class="btn btn-danger mr-1"
+                    class="mr-1"
                     @click.prevent="deleteTodoProject(todo)"
                   >
                     <i class="fa fa-trash-o"></i>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -163,19 +175,21 @@
     </div>
     <UpdateTodoModal></UpdateTodoModal>
     <AddTodoToProject></AddTodoToProject>
+    <CreateProjectModal></CreateProjectModal>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
-// modal-add-todo-to-project
+import CreateProjectModal from "@/components/CreateProjectModal.vue"
 import AddTodoToProject from "@/components/AddTodoToProject.vue";
 
 export default {
   components: {
     UpdateTodoModal,
-    AddTodoToProject
+    AddTodoToProject,
+    CreateProjectModal
   },
   name: "Todo",
   computed: {
@@ -245,8 +259,6 @@ h6 {
 }
 
 .complete {
-  background-color: #3DDC97 !important
+  background-color: #3ddc97 !important;
 }
-
-
 </style>

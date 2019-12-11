@@ -21,8 +21,8 @@
         </ul>
       </nav>
     </div>
-    <div class="container">
-      <div class="row">
+    <div class="container-fluid">
+      <div class="row mr-4">
         <div class="col-md-2 navbar-expand-md pt-4">
           <b-navbar-toggle class target="side-collapse">
             <i class="fa fa-align-justify"></i>

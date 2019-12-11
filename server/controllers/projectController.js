@@ -27,7 +27,7 @@ class projectController {
     static updateTodoStatus(req, res, next) {
         let status = req.body.status || false
         let doneDate = null
-        if (status == 'true') {
+        if (status == true) {
             doneDate = new Date()
         }
         Todo.findOneAndUpdate({ _id : req.params.todoId}, {status, doneDate}, {new : true, runValidators: true})
