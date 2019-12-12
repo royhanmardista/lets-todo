@@ -20,10 +20,16 @@
 
       <div class="row border-bottom pt-2" v-for="project in projects" :key="project._id">
         <div class="d-flex justify-content-between w-100">
-          <h5 class="btn projectlist" v-b-toggle="project._id">
-            <i class="fa fa-dot-circle-o"></i>
-            {{project.title}}
-          </h5>
+          <div>
+            <h3 class="btn projectlist" v-b-toggle="project._id">
+              <i class="fa fa-dot-circle-o"></i>
+              {{project.title}}
+            </h3>
+            <p
+              class="ml-4"
+              style="font-size:0.7rem"
+            >{{moment(project.dueDate).format("dddd, MMMM Do YYYY, h:mm:ss a")}}</p>
+          </div>
           <div class="d-flex justify-content-between">
             <div class="btn text-secondary" v-b-toggle="'member'+project._id">
               <p style="font-size:0.8rem">
@@ -45,15 +51,14 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <button
                   class="dropdown-item"
-                  href
                   v-b-modal.modal-add-todo-to-project
                   @click.prevent="showAddTodoToProject(project)"
                 >
                   <i class="fa fa-plus-square"></i> Add Task
                 </button>
-                <a class="dropdown-item" href="#">
+                <button class="dropdown-item" v-b-modal.modal-update-project @click.prevent="showAddTodoToProject(project)">
                   <i class="fa fa-pencil"></i> Edit project
-                </a>
+                </button>
                 <button class="dropdown-item" v-b-toggle="'addMember'+project._id">
                   <i class="fa fa-user"></i> Add Member
                 </button>
@@ -65,12 +70,11 @@
             </div>
           </div>
         </div>
-
         <!-- project member container -->
         <b-collapse :visible="true" :id="project._id" class="container-fluid">
           <!-- search member -->
           <b-collapse :id="'addMember'+project._id">
-          <h6 style="cursor:pointer" v-b-toggle="'addMember'+project._id">AddMembers</h6>
+            <h6 style="cursor:pointer" v-b-toggle="'addMember'+project._id">AddMembers</h6>
             <b-form @submit.prevent="findMember" class="mb-2 w-50">
               <b-input
                 v-model="newMember"
@@ -79,45 +83,44 @@
                 placeholder="Search email or username ..."
               ></b-input>
             </b-form>
-          <!-- new member card -->
-          <div v-if="isSearchingMember">
-            <p v-if="!newMembers.length">No member found ....</p>
-            <div class="row mb-3">
-              <b-collapse
-                :visible="true"
-                :id="'member'+project._id"
-                class="col-md-4 col-sm-12 col-12"
-                v-for="member in newMembers"
-                :key="member._id"                
-              >
-                <div class="container-fluid border rounded p-2 mb-1">
-                  <div class="row d-flex justify-content-between">
-                    <div class="col-md-3 col-2 col-sm-2 pl-3 pr-0 d-flex" style="height:3rem">
-                      <b-img :src="member.photo" class="w-100 rounded" alt rounded="circle"></b-img>
-                    </div>
-                    <div
-                      class="col-md-7 col-8 col-sm-8 hideOverflow d-flex flex-column justify-content-between"
-                      style="font-size:0.9rem"
-                    >
-                      <div style="font-weight: bold">{{member.username}}</div>
-                      <div>{{member.email}}</div>
-                    </div>
-                    <div
-                      class="col-md-2 col-2 col-sm-2 d-flex flex-column justify-content-center btn"
-                      v-b-popover.hover.top="'add member to project'"
-                      @click.prevent="addMember(member._id, project._id)"
-                    >
-                      <i class="fa fa-plus-circle"></i>
+            <!-- new member card -->
+            <div v-if="isSearchingMember">
+              <p v-if="!newMembers.length">No member found ....</p>
+              <div class="row mb-3">
+                <b-collapse
+                  :visible="true"
+                  :id="'member'+project._id"
+                  class="col-md-4 col-sm-12 col-12"
+                  v-for="member in newMembers"
+                  :key="member._id"
+                >
+                  <div class="container-fluid border rounded p-2 mb-1">
+                    <div class="row d-flex justify-content-between">
+                      <div class="col-md-3 col-2 col-sm-2 pl-3 pr-0 d-flex" style="height:3rem">
+                        <b-img :src="member.photo" class="w-100 rounded" alt rounded="circle"></b-img>
+                      </div>
+                      <div
+                        class="col-md-7 col-8 col-sm-8 hideOverflow d-flex flex-column justify-content-between"
+                        style="font-size:0.9rem"
+                      >
+                        <div style="font-weight: bold">{{member.username}}</div>
+                        <div>{{member.email}}</div>
+                      </div>
+                      <div
+                        class="col-md-2 col-2 col-sm-2 d-flex flex-column justify-content-center btn"
+                        v-b-popover.hover.top="'add member to project'"
+                        @click.prevent="addMember(member._id, project._id)"
+                      >
+                        <i class="fa fa-plus-circle"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </b-collapse>
+                </b-collapse>
+              </div>
             </div>
-          </div>
-          <!-- new member end -->
+            <!-- new member end -->
           </b-collapse>
           <!-- search member end -->
-
 
           <h6 style="cursor:pointer" v-b-toggle="'member'+project._id">Members</h6>
           <!-- member card start -->
@@ -155,7 +158,7 @@
           </div>
           <!-- member card end -->
           <h6 style="cursor:pointer" v-b-toggle="'task'+project._id" class="mb-1">Tasks</h6>
-          
+
           <div class="row mb-3">
             <div v-if="!project.todos.length">
               <p class="ml-3">You have no task in this project ...</p>
@@ -164,7 +167,7 @@
             <b-collapse
               :visible="true"
               :id="'task'+project._id"
-              class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"              
+              class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"
               v-for="todo in project.todos"
               :key="todo._id"
             >
@@ -227,12 +230,16 @@
             </b-collapse>
             <!-- end card -->
           </div>
+          <div class="d-flex justify-content-center">
+            <p style="font-family: 'Abril Fatface', cursive;">" {{project.description}} "</p>
+          </div>
         </b-collapse>
       </div>
     </div>
     <UpdateTodoModal></UpdateTodoModal>
     <AddTodoToProject></AddTodoToProject>
     <CreateProjectModal></CreateProjectModal>
+    <UpdataProjectModal></UpdataProjectModal>
   </div>
 </template>
 
@@ -241,12 +248,14 @@ import { mapState } from "vuex";
 import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
 import CreateProjectModal from "@/components/CreateProjectModal.vue";
 import AddTodoToProject from "@/components/AddTodoToProject.vue";
+import UpdataProjectModal from "@/components/UpdataProjectModal.vue";
 
 export default {
   components: {
     UpdateTodoModal,
     AddTodoToProject,
-    CreateProjectModal
+    CreateProjectModal,
+    UpdataProjectModal
   },
   name: "Todo",
   computed: {
@@ -259,11 +268,14 @@ export default {
   },
   methods: {
     async removeMember(memberId, projectId) {
-      await this.$store.dispatch('removeMemberFromProject', {memberId, projectId})
+      await this.$store.dispatch("removeMemberFromProject", {
+        memberId,
+        projectId
+      });
     },
     async addMember(memberId, projectId) {
-      this.newMember = ""
-      await this.$store.dispatch('addMemberToProject', { memberId, projectId })
+      this.newMember = "";
+      await this.$store.dispatch("addMemberToProject", { memberId, projectId });
     },
     async findMember() {
       await this.$store.dispatch("findMember", this.newMember);

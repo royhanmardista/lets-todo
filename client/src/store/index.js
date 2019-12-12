@@ -14,19 +14,18 @@ export default new Vuex.Store({
     projects: [],
     project: {},
     newMembers: [],
-    isSearchingMember: false
+    isSearchingMember: false,
   },
   mutations: {
-    // mutations for project
-    // SET_TODO_TO_PROJECT(state, palyload) {
-    //   state.project.todos.push(payload)
-    // },
+    // mutations for project  
     SET_NEW_MEMBERS(state, payload) {
       state.newMembers = payload
       state.isSearchingMember = true
     },
     SET_ADD_TODO_TO_PROJECT(state, payload) {
       state.project = payload
+      state.project.date = moment(payload.dueDate).format('YYYY-M-D')
+      state.project.time = moment(payload.dueDate).format('HH:mm')
     },
     SET_PROJECTS(state, payload) {
       state.projects = payload
@@ -47,6 +46,39 @@ export default new Vuex.Store({
   },
   actions: {
     // action for project
+    async updateProject({
+      commit,
+      dispatch,
+      state
+    }) {
+      try {
+        commit('SET_ISLOADING', true)
+        const {
+          data
+        } = await server.put(`/project/${state.project._id}`, {
+          title: state.project.title,
+          dueDate: new Date(`${state.project.date} ${state.project.time}`),
+          description: state.project.description
+        }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        Swal.fire(
+          'Updated!',
+          `${data.message}`,
+          'success'
+        )
+      } catch (err) {
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
+      } finally {
+        dispatch('getAllProject')
+      }
+    },
     async removeMemberFromProject({
       commit,
       dispatch
@@ -54,7 +86,6 @@ export default new Vuex.Store({
       memberId,
       projectId
     }) {
-      console.log('masuk remove member', projectId, memberId)
       commit('SET_ISLOADING', true)
       try {
         const {
@@ -88,7 +119,6 @@ export default new Vuex.Store({
         memberId,
         projectId
       } = payload
-      console.log('masuk add member to project', memberId, projectId)
       commit('SET_ISLOADING', true)
       try {
         const {
@@ -127,14 +157,17 @@ export default new Vuex.Store({
         } = await server.get(`/search/${newMember}`)
         commit('SET_NEW_MEMBERS', data)
       } catch (err) {
-        console.log(err)
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
       }
     },
     async deleteProject({
       commit,
       dispatch
     }, project) {
-      console.log('masuk delete project')
       const confirm = await Swal.fire({
         title: 'Are you sure you want to delete this poject?',
         text: 'Deleting this project mean deleting all the tasks in this project, and you cant revert it!',
@@ -174,7 +207,6 @@ export default new Vuex.Store({
       commit,
       dispatch
     }, project) {
-      console.log('masuk create project')
       let {
         title,
         dueDate,
@@ -254,7 +286,6 @@ export default new Vuex.Store({
       commit,
       dispatch
     }, payload) {
-      console.log('masuk addTodoToProject', payload)
       commit('SET_ISLOADING', true)
       server.put(`/project/${payload.projectId}/todo`, {
           title: payload.title,
@@ -296,7 +327,6 @@ export default new Vuex.Store({
     getAllProject({
       commit
     }) {
-      console.log('masuk get all projects')
       commit('SET_ISLOADING', true)
       server.get(`/project`, {
           headers: {
@@ -439,11 +469,9 @@ export default new Vuex.Store({
       dispatch
     }, payload) {
       commit('SET_ISLOADING', true)
-      console.log('masuk update status', payload)
       let {
         status
       } = payload
-      console.log(status)
       let update
       if (status === true) {
         update = false
@@ -467,21 +495,20 @@ export default new Vuex.Store({
           if (data.todo.status === false) {
             Swal.fire({
               title: 'Unchecked',
-              icon: 'error',
-              text: 'Unchecked todo success'
+              icon: 'success',
+              text: 'Unchecked task success'
 
             })
           } else {
             Swal.fire({
               title: 'Checked',
               icon: 'success',
-              text: 'Todo completed success'
+              text: 'Task completed'
 
             })
           }
         })
         .catch(err => {
-          console.log(err)
           Swal.fire({
             title: 'Ops...',
             icon: 'error',
@@ -500,7 +527,6 @@ export default new Vuex.Store({
       commit
     }) {
       commit('SET_ISLOADING', true)
-      console.log('masuk get today list')
       return server.get('/todo', {
           headers: {
             token: localStorage.getItem('token')
@@ -512,7 +538,11 @@ export default new Vuex.Store({
           commit('SET_TODAY_LIST', data)
         })
         .catch(err => {
-          console.log(err)
+          Swal.fire({
+            title: 'Ops...',
+            icon: 'error',
+            text: err.response.data.message
+          })
         })
     }
   },

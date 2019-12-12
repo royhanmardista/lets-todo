@@ -2,11 +2,14 @@
   <div>
     <div v-if="isLoading">
       <div class="d-flex justify-content-center mb-3">
-          <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
+        <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
       </div>
     </div>
     <div v-if="!isLoading" class="container-fluid">
       <div class="row">
+        <div v-if="!todayList.length">
+          <p>You have no task today ...</p>
+        </div>
         <div
           class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"
           id="todoContainer"
@@ -18,7 +21,9 @@
             class="card-header text-white mx-1 rounded mt-2"
             :class="{'bg-danger' : !todo.status, 'bg-success' : todo.status}"
           >
-            <div style="font-family: 'Bree Serif', serif; font-size:0.9rem">{{todo.title.toUpperCase()}}</div>
+            <div
+              style="font-family: 'Bree Serif', serif; font-size:0.9rem"
+            >{{todo.title.toUpperCase()}}</div>
           </div>
           <div
             class="card-body border mt-1 mx-1 rounded p-2"
@@ -36,7 +41,10 @@
                 {{new Date(todo.doneDate || todo.dueDate).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}}
               </div>
             </div>
-              <p style="min-height:100px; text-align:justify !important" class="card-text border-top border-bottom py-2">{{todo.description}}</p>
+            <p
+              style="min-height:100px; text-align:justify !important"
+              class="card-text border-top border-bottom py-2"
+            >{{todo.description}}</p>
             <div class="d-flex justify-content-between">
               <button
                 v-b-popover.hover.top="'complete/uncomplete task'"
@@ -72,46 +80,45 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
+import { mapState } from "vuex";
+import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
 
 export default {
   components: {
     UpdateTodoModal
   },
-  name: 'Todo',
+  name: "Todo",
   computed: {
-    ...mapState(['todayList', 'isLoading'])
+    ...mapState(["todayList", "isLoading"])
   },
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
   methods: {
-    showEditModal (todo) {
-      this.$store.commit('SET_EDIT_TODO', todo)
+    showEditModal(todo) {
+      this.$store.commit("SET_EDIT_TODO", todo);
     },
-    getTodoToday () {
-      this.$store.dispatch('getTodayList')
+    getTodoToday() {
+      this.$store.dispatch("getTodayList");
     },
-    async completeTodo (todo) {
-      await this.$store.dispatch('updateTodoStatus', todo)
+    async completeTodo(todo) {
+      await this.$store.dispatch("updateTodoStatus", todo);
     },
-    async deleteTodo (todo) {
-      await this.$store.dispatch('deleteTodo', todo)
+    async deleteTodo(todo) {
+      await this.$store.dispatch("deleteTodo", todo);
     },
-    async updateTodo (todo) {
-      await this.$store.dispatch('updateTodo', todo)
+    async updateTodo(todo) {
+      await this.$store.dispatch("updateTodo", todo);
     }
   },
-  created () {
-    this.getTodoToday()
+  created() {
+    this.getTodoToday();
   },
-  beforeRouteEnter (to, from, next) {
-    this.getTodoToday()
-    next()
+  beforeRouteEnter(to, from, next) {
+    this.getTodoToday();
+    next();
   }
-}
+};
 </script>
 
 <style>
