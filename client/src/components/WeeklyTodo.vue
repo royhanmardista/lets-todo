@@ -21,7 +21,7 @@
           <div class="row">
               <b-collapse class="text-center ml-3" v-if="!data.todos.length" :id="data.name" :visible="true" style="font-size:0.7rem">
                   <p>Hmmm.... It seems that you have no task this {{data.name.split(',')[0]}}</p>
-            </b-collapse>            
+            </b-collapse>
             <b-collapse
               :visible="true"
               :id="data.name"
@@ -99,48 +99,48 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
+import { mapState } from 'vuex'
+import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
 
 export default {
   components: {
     UpdateTodoModal
   },
-  name: "Todo",
+  name: 'Todo',
   computed: {
-    ...mapState(["weeklyTodos", "isLoading"])
+    ...mapState(['weeklyTodos', 'isLoading'])
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    async getWeeklyTodo() {
-      await this.$store.dispatch("getWeeklyTodo");
+    async getWeeklyTodo () {
+      await this.$store.dispatch('getWeeklyTodo')
     },
-    showEditModal(todo) {
-      this.$store.commit("SET_EDIT_TODO", todo);
+    showEditModal (todo) {
+      this.$store.commit('SET_EDIT_TODO', todo)
     },
-    getTodoToday() {
-      this.$store.dispatch("getTodayList");
+    getTodoToday () {
+      this.$store.dispatch('getTodayList')
     },
-    async completeTodo(todo) {
-      await this.$store.dispatch("updateTodoStatus", todo);
+    async completeTodo (todo) {
+      await this.$store.dispatch('updateTodoStatus', todo)
     },
-    async deleteTodo(todo) {
-      await this.$store.dispatch("deleteTodo", todo);
+    async deleteTodo (todo) {
+      await this.$store.dispatch('deleteTodo', todo)
     },
-    async updateTodo(todo) {
-      await this.$store.dispatch("updateTodo", todo);
+    async updateTodo (todo) {
+      await this.$store.dispatch('updateTodo', todo)
     }
   },
-  created() {
-    this.getWeeklyTodo();
+  created () {
+    this.getWeeklyTodo()
   }
   //   beforeRouteEnter(to, from, next) {
   //     this.getWeeklyTodo();
   //     next();
   //   }
-};
+}
 </script>
 
 <style>

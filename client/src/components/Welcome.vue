@@ -26,23 +26,23 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState(["loggedUser", "isLoading"])
+    ...mapState(['loggedUser', 'isLoading'])
   },
   methods: {
-    toToday() {
-      this.$router.push("/home/today");
+    toToday () {
+      this.$router.push('/home/today')
     },
-    toProject() {
-      this.$router.push("/home/project");
+    toProject () {
+      this.$router.push('/home/project')
     }
   },
-  creted() {
-    this.$store.dispatch("findUser");
+  creted () {
+    this.$store.dispatch('findUser')
   }
-};
+}
 </script>
 
 <style>

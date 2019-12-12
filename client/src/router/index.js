@@ -16,7 +16,7 @@ const routes = [{
   children: [{
     path: '/',
     name: 'frontpage',
-    component: () => import(/* webpackChunkName: "frontpage" */ '../components/FrontPage.vue')
+    component: () => import(/* webpackChunkName: "frontpage" */ '../views/FrontPage.vue')
   },
   {
     path: 'login',
@@ -29,11 +29,6 @@ const routes = [{
     component: () => import(/* webpackChunkName: "register" */ '../components/Register.vue')
   }
   ]
-},
-{
-  path: '/about',
-  name: 'about',
-  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 },
 {
   path: '/home',

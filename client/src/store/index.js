@@ -16,11 +16,11 @@ export default new Vuex.Store({
     newMembers: [],
     isSearchingMember: false,
     loggedUser: {},
-    weeklyTodos : []
+    weeklyTodos: []
   },
   mutations: {
     // mutations for project
-    SET_WEEK_LIST(state, payload) {
+    SET_WEEK_LIST (state, payload) {
       state.weeklyTodos = payload
       state.isLoading = false
     },
