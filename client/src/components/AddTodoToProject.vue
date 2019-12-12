@@ -42,56 +42,54 @@
 </template>
 
 <script>
-import server from "@/api/server.js";
-import Swal from "sweetalert2";
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState(["project"])
+    ...mapState(['project'])
   },
   components: {},
-  created() {},
-  data() {
+  created () {},
+  data () {
     return {
-      title: "",
-      date: "",
-      description: "",
-      time: ""
-    };
+      title: '',
+      date: '',
+      description: '',
+      time: ''
+    }
   },
   methods: {
-    checkFormValidity() {
-      const valid = this.$refs.form.checkValidity();
-      this.nameState = valid ? "valid" : "invalid";
-      return valid;
+    checkFormValidity () {
+      const valid = this.$refs.form.checkValidity()
+      this.nameState = valid ? 'valid' : 'invalid'
+      return valid
     },
-    resetModal() {
-      this.title = "";
-      this.date = "";
-      this.description = "";
-      this.time = "";
+    resetModal () {
+      this.title = ''
+      this.date = ''
+      this.description = ''
+      this.time = ''
     },
-    handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault();
-      this.handleSubmit();
+    handleOk (bvModalEvt) {
+      bvModalEvt.preventDefault()
+      this.handleSubmit()
     },
-    handleSubmit() {
+    handleSubmit () {
       if (!this.checkFormValidity()) {
-        return;
+        return
       }
       let data = {
         title: this.title,
         dueDate: new Date(`${this.date} ${this.time}`),
         description: this.description,
-        projectId : this.project._id
-      };
-      this.$store.dispatch("addTodoToProject", data);
+        projectId: this.project._id
+      }
+      this.$store.dispatch('addTodoToProject', data)
       this.$nextTick(() => {
-        this.$refs.modal.hide();
-      });
+        this.$refs.modal.hide()
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

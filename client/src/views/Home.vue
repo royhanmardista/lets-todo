@@ -43,9 +43,9 @@
                 <div class="d-flex justify-content-between">
                   <router-link to="/home/project">
                     <i class="fa fa-list-ul text-warning"></i> Projects
-                  </router-link>                  
+                  </router-link>
                 </div>
-                <!-- Elements to collapse -->                
+                <!-- Elements to collapse -->
               </li>
             </ul>
           </b-collapse>
@@ -59,37 +59,37 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(["isLoading", "projects"])
+    ...mapState(['isLoading', 'projects'])
   },
-  data() {
+  data () {
     return {
       home: true
-    };
+    }
   },
   methods: {
-    async getAllProject() {
-      console.log("masuk get all project home");
-      await this.$store.dispatch("getAllProject");
+    async getAllProject () {
+      console.log('masuk get all project home')
+      await this.$store.dispatch('getAllProject')
     },
-    logout() {
-      localStorage.removeItem("token");
-      this.$router.push("/");
+    logout () {
+      localStorage.removeItem('token')
+      this.$router.push('/')
     },
-    checkLoginStatus() {
-      if (!localStorage.getItem("token")) {
-        this.$router.push("/");
+    checkLoginStatus () {
+      if (!localStorage.getItem('token')) {
+        this.$router.push('/')
       }
     }
   },
-  created() {
-    this.checkLoginStatus();
-    this.getAllProject();
+  created () {
+    this.checkLoginStatus()
+    this.getAllProject()
   }
-};
+}
 </script>
 
 <style>
@@ -101,7 +101,6 @@ export default {
 .addproject:hover {
   color: gold
 }
-
 
 #logoutbutton:hover {
   color: whitesmoke;

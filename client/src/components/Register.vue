@@ -72,13 +72,13 @@
 </template>
 
 <script>
-import GSignInButton from 'vue-google-signin-button'
+// import GSignInButton from 'vue-google-signin-button'
 import server from '@/api/server.js'
 import Swal from 'sweetalert2'
 
 export default {
   components: {
-    GSignInButton
+    // GSignInButton
   },
   data () {
     return {
@@ -92,28 +92,28 @@ export default {
     }
   },
   methods: {
-    onSignInSuccess (googleUser) {
-      console.log('masuk login google')
-      server
-        .post('/login-google', {
-          google_token: id_token
-        })
-        .then(({ data }) => {
-          console.log(data, 'dapat data')
-          localStorage.setItem('token', data.token)
-          this.toHome(data)
-        })
-        .catch(err => {
-          Swal.fire(
-            'Opps ....!',
-            `${err.response.data.message}`,
-            'error'
-          )
-        })
-    },
-    onSignInError (error) {
-      console.log('OH NOES', error)
-    },
+    // onSignInSuccess (googleUser) {
+    //   console.log('masuk login google')
+    //   server
+    //     .post('/login-google', {
+    //       google_token: id_token
+    //     })
+    //     .then(({ data }) => {
+    //       console.log(data, 'dapat data')
+    //       localStorage.setItem('token', data.token)
+    //       this.toHome(data)
+    //     })
+    //     .catch(err => {
+    //       Swal.fire(
+    //         'Opps ....!',
+    //         `${err.response.data.message}`,
+    //         'error'
+    //       )
+    //     })
+    // },
+    // onSignInError (error) {
+    //   console.log('OH NOES', error)
+    // },
     register () {
       server
         .post('/register', {

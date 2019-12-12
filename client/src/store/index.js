@@ -12,13 +12,19 @@ export default new Vuex.Store({
     isLoading: true,
     editTodo: {},
     projects: [],
-    project: {}
+    project: {},
+    newMembers: [],
+    isSearchingMember: false
   },
   mutations: {
     // mutations for project
     // SET_TODO_TO_PROJECT(state, palyload) {
     //   state.project.todos.push(payload)
     // },
+    SET_NEW_MEMBERS(state, payload) {
+      state.newMembers = payload
+      state.isSearchingMember = true
+    },
     SET_ADD_TODO_TO_PROJECT(state, payload) {
       state.project = payload
     },
@@ -40,8 +46,58 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    //action for project
+    // action for project
+    async addMemberToProject({
+      commit,
+      dispatch,
+      state
+    }, payload) {
+      let {
+        memberId,
+        projectId
+      } = payload
+      console.log('masuk add member to project', memberId, projectId)
+      commit('SET_ISLOADING', true)
+      try {
+        const {
+          data
+        } = await server.put(`/project/${projectId}/member`, {
+          newMember: memberId
+        }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        Swal.fire(
+          'Success!',
+          `${data.message}`,
+          'success'
+        )
+        commit('SET_NEW_MEMBERS', [])
+        state.isSearchingMember = false
+      } catch (err) {
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
+      } finally {
+        dispatch('getAllProject')
+      }
+    },
 
+    async findMember({
+      commit,
+    }, newMember) {
+      try {
+        let {
+          data
+        } = await server.get(`/search/${newMember}`)
+        commit('SET_NEW_MEMBERS', data)
+      } catch (err) {
+        console.log(err)
+      }
+    },
     async deleteProject({
       commit,
       dispatch
@@ -49,7 +105,7 @@ export default new Vuex.Store({
       console.log('masuk delete project')
       const confirm = await Swal.fire({
         title: 'Are you sure you want to delete this poject?',
-        text: "Deleting this project mean deleting all the tasks in this project, and you cant revert it!",
+        text: 'Deleting this project mean deleting all the tasks in this project, and you cant revert it!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: 'green',
@@ -171,7 +227,7 @@ export default new Vuex.Store({
       server.put(`/project/${payload.projectId}/todo`, {
           title: payload.title,
           dueDate: payload.dueDate,
-          description: payload.description,
+          description: payload.description
         }, {
           headers: {
             token: localStorage.getItem('token')
@@ -206,7 +262,7 @@ export default new Vuex.Store({
         })
     },
     getAllProject({
-      commit,
+      commit
     }) {
       console.log('masuk get all projects')
       commit('SET_ISLOADING', true)
@@ -230,7 +286,7 @@ export default new Vuex.Store({
         })
     },
 
-    //actions for todo
+    // actions for todo
 
     updateTodo({
       commit,
@@ -357,8 +413,8 @@ export default new Vuex.Store({
       } = payload
       console.log(status)
       let update
-      if (status == true) {
-        update = 'false'
+      if (status === true) {
+        update = false
       } else {
         update = true
       }
@@ -376,7 +432,7 @@ export default new Vuex.Store({
         .then(({
           data
         }) => {
-          if (data.todo.status == false) {
+          if (data.todo.status === false) {
             Swal.fire({
               title: 'Unchecked',
               icon: 'error',

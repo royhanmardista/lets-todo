@@ -4,69 +4,69 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [{
+  path: '/',
+  component: () => import(/* webpackChunkName: "frontnav" */ '../views/FrontNav.vue'),
+  beforeEnter: (to, from, next) => {
+    if (localStorage.getItem('token')) {
+      next('/home')
+    } else {
+      next()
+    }
+  },
+  children: [{
     path: '/',
-    component: () => import( /* webpackChunkName: "frontnav" */ '../views/FrontNav.vue'),
-    beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('token')) {
-        next('/home')
-      } else {
-        next()
-      }
-    },
-    children: [{
-        path: '/',
-        name: 'frontpage',
-        component: () => import( /* webpackChunkName: "frontpage" */ '../components/FrontPage.vue')
-      },
-      {
-        path: 'login',
-        name: 'login',
-        component: () => import( /* webpackChunkName: "login" */ '../components/Login.vue')
-      },
-      {
-        path: 'register',
-        name: 'register',
-        component: () => import( /* webpackChunkName: "register" */ '../components/Register.vue')
-      }
-    ]
+    name: 'frontpage',
+    component: () => import(/* webpackChunkName: "frontpage" */ '../components/FrontPage.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import( /* webpackChunkName: "about" */ '../views/About.vue')
+    path: 'login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "login" */ '../components/Login.vue')
   },
   {
-    path: '/home',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Home.vue'),
-    beforeEnter: (to, from, next) => {
-      if (!localStorage.getItem('token')) {
-        next('/')
-      } else {
-        next()
-      }
-    },
-    children: [{
-        path: '/',
-        name: 'home',
-        component: () => import( /* webpackChunkName: "welcome" */ '../components/Welcome.vue')
-      },
-      {
-        path: 'today',
-        name: 'today',
-        component: () => import( /* webpackChunkName: "today" */ '../components/Today.vue')
-      },
-      {
-        path: 'week',
-        name: 'week',
-        component: () => import( /* webpackChunkName: "week" */ '../components/Week.vue')
-      },
-      {
-        path: 'project',
-        name: 'project',
-        component: () => import( /* webpackChunkName: "project" */ '../components/Project.vue'),        
-      }
-    ]
+    path: 'register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "register" */ '../components/Register.vue')
   }
+  ]
+},
+{
+  path: '/about',
+  name: 'about',
+  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+},
+{
+  path: '/home',
+  component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
+  beforeEnter: (to, from, next) => {
+    if (!localStorage.getItem('token')) {
+      next('/')
+    } else {
+      next()
+    }
+  },
+  children: [{
+    path: '/',
+    name: 'home',
+    component: () => import(/* webpackChunkName: "welcome" */ '../components/Welcome.vue')
+  },
+  {
+    path: 'today',
+    name: 'today',
+    component: () => import(/* webpackChunkName: "today" */ '../components/Today.vue')
+  },
+  {
+    path: 'week',
+    name: 'week',
+    component: () => import(/* webpackChunkName: "week" */ '../components/Week.vue')
+  },
+  {
+    path: 'project',
+    name: 'project',
+    component: () => import(/* webpackChunkName: "project" */ '../components/Project.vue')
+  }
+  ]
+}
 ]
 
 const router = new VueRouter({

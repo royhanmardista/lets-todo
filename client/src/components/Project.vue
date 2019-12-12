@@ -12,7 +12,9 @@
           <p>You have {{projects.length}} projects in total</p>
         </div>
         <div>
-          <button class="btn btn-outline-success" v-b-modal.modal-create-project><i class="fa fa-plus-circle"></i> Create Project</button>
+          <button class="btn btn-outline-success" v-b-modal.modal-create-project>
+            <i class="fa fa-plus-circle"></i> Create Project
+          </button>
         </div>
       </div>
 
@@ -52,9 +54,9 @@
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-pencil"></i> Edit project
                 </a>
-                <a class="dropdown-item" href="#">
+                <button class="dropdown-item" v-b-toggle="'addMember'+project._id">
                   <i class="fa fa-user"></i> Add Member
-                </a>
+                </button>
 
                 <button class="dropdown-item" @click.prevent="deleteProject(project)">
                   <i class="fa fa-trash"></i> Delete Project
@@ -64,9 +66,61 @@
           </div>
         </div>
 
+        <!-- project member container -->
         <b-collapse :visible="true" :id="project._id" class="container-fluid">
-          <!-- member card start -->
+          <!-- search member -->
+          <b-collapse :id="'addMember'+project._id">
+          <h6 style="cursor:pointer" v-b-toggle="'addMember'+project._id">AddMembers</h6>
+            <b-form @submit.prevent="findMember" class="mb-2 w-50">
+              <b-input
+                v-model="newMember"
+                type="text"
+                aria-describedby="password-help-block"
+                placeholder="Search email or username ..."
+              ></b-input>
+            </b-form>
+          <!-- new member card -->
+          <div v-if="isSearchingMember">
+            <p v-if="!newMembers.length">No member found ....</p>
+            <div class="row mb-3">
+              <b-collapse
+                :visible="true"
+                :id="'member'+project._id"
+                class="col-md-4 col-sm-12 col-12"
+                v-for="member in newMembers"
+                :key="member._id"                
+              >
+                <div class="container-fluid border rounded p-2 mb-1">
+                  <div class="row d-flex justify-content-between">
+                    <div class="col-md-3 col-2 col-sm-2 pl-3 pr-0 d-flex" style="height:3rem">
+                      <b-img :src="member.photo" class="w-100 rounded" alt rounded="circle"></b-img>
+                    </div>
+                    <div
+                      class="col-md-7 col-8 col-sm-8 hideOverflow d-flex flex-column justify-content-between"
+                      style="font-size:0.9rem"
+                    >
+                      <div style="font-weight: bold">{{member.username}}</div>
+                      <div>{{member.email}}</div>
+                    </div>
+                    <div
+                      class="col-md-2 col-2 col-sm-2 d-flex flex-column justify-content-center btn"
+                      v-b-popover.hover.top="'add member to project'"
+                      @click.prevent="addMember(member._id, project._id)"
+                    >
+                      <i class="fa fa-plus-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </b-collapse>
+            </div>
+          </div>
+          <!-- new member end -->
+          </b-collapse>
+          <!-- search member end -->
+
+
           <h6>Members</h6>
+          <!-- member card start -->
           <div class="row mb-3">
             <b-collapse
               :visible="true"
@@ -77,7 +131,7 @@
             >
               <div class="container-fluid border rounded p-2 mb-1">
                 <div class="row d-flex justify-content-between">
-                  <div class="col-md-3 col-2 col-sm-2 pr-0 d-flex">
+                  <div class="col-md-3 col-2 col-sm-2 pl-3 pr-0 d-flex" style="height:3rem">
                     <b-img :src="member.photo" class="w-100 rounded" alt rounded="circle"></b-img>
                   </div>
                   <div
@@ -98,8 +152,8 @@
               </div>
             </b-collapse>
           </div>
-          <h6 class="mb-1">Tasks</h6>
           <!-- member card end -->
+          <h6 class="mb-1">Tasks</h6>
           <div class="row mb-3">
             <div v-if="!project.todos.length">
               <p class="ml-3">You have no task in this project ...</p>
@@ -182,7 +236,7 @@
 <script>
 import { mapState } from "vuex";
 import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
-import CreateProjectModal from "@/components/CreateProjectModal.vue"
+import CreateProjectModal from "@/components/CreateProjectModal.vue";
 import AddTodoToProject from "@/components/AddTodoToProject.vue";
 
 export default {
@@ -193,14 +247,23 @@ export default {
   },
   name: "Todo",
   computed: {
-    ...mapState(["projects", "isLoading"])
+    ...mapState(["projects", "isLoading", "newMembers", "isSearchingMember"])
   },
   data() {
-    return {};
+    return {
+      newMember: ""
+    };
   },
   methods: {
+    async addMember(memberId, projectId) {
+      this.newMember = ""
+      await this.$store.dispatch('addMemberToProject', { memberId, projectId })
+    },
+    async findMember() {
+      await this.$store.dispatch("findMember", this.newMember);
+    },
     async deleteProject(project) {
-      await this.$store.dispatch('deleteProject', project)
+      await this.$store.dispatch("deleteProject", project);
     },
     showAddTodoToProject(project) {
       this.$store.commit("SET_ADD_TODO_TO_PROJECT", project);

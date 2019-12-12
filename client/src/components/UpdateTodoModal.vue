@@ -42,8 +42,6 @@
 </template>
 
 <script>
-import server from '@/api/server.js'
-import Swal from 'sweetalert2'
 import { mapState } from 'vuex'
 
 export default {

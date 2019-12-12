@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-modal
-      id="modal-create-project"
+      id="modal-add-member"
       ref="modal"
-      title="Create New Project"
+      title="Add New Member To Your Project"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -15,8 +15,8 @@
         class
       >
         <!-- title -->
-        <b-form-group label="Title" label-for="title-input" invalid-feedback="title is required">
-          <b-form-input id="title-input" v-model="title" type="text" required></b-form-input>
+        <b-form-group label="Email" label-for="email-input" invalid-feedback="title is required" aria-placeholder="input email or username">
+          <b-form-input id="email-input" v-model="title" type="text" required></b-form-input>
         </b-form-group>
         <!-- title end  -->
         <!-- date -->
@@ -79,7 +79,7 @@ export default {
         dueDate: new Date(`${this.date} ${this.time}`),
         description: this.description
       }
-      this.$store.dispatch('createProject', data)
+      this.$store.dispatch('addTodo', data)
       this.$nextTick(() => {
         this.$refs.modal.hide()
       })
