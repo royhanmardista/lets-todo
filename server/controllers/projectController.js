@@ -12,7 +12,7 @@ class projectController {
                 if (project) {
                     res.json({
                         project : project,
-                        message : 'todo succesfully updated'
+                        message : 'Project succesfully updated'
                     })
                 } else {
                     next({

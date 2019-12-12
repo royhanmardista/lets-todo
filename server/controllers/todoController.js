@@ -37,12 +37,21 @@ class todoController{
     }
 
     static findAll(req, res, next) {     
-        Todo.
+        return Todo.
             find({
                 user : req.user.id
-            }).populate('user',"-password").sort({dueDate : 1})
-            .then(todos => {  
-                res.json(todos)                
+            }).sort({dueDate : 1})
+            .then(todos => {
+                let data = []
+                for (let i=0; i<7; i++) {
+                    let temp = {}
+                    temp.name = moment().add(i, 'days').format("dddd, MMMM Do YYYY")
+                    temp.todos = todos.filter(todo => {
+                        return moment().add(i, 'days').isSame(todo.dueDate, 'day')
+                    }) 
+                    data.push(temp) 
+                }    
+                res.json(data)          
             })
             .catch(next)
     }
