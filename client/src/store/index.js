@@ -47,6 +47,38 @@ export default new Vuex.Store({
   },
   actions: {
     // action for project
+    async removeMemberFromProject({
+      commit,
+      dispatch
+    }, {
+      memberId,
+      projectId
+    }) {
+      console.log('masuk remove member', projectId, memberId)
+      commit('SET_ISLOADING', true)
+      try {
+        const {
+          data
+        } = await server.delete(`/project/${projectId}/remove/member/${memberId}`, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        Swal.fire(
+          'Success!',
+          `${data.message}`,
+          'success'
+        )
+        dispatch('getAllProject')
+      } catch (err) {
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
+        commit('SET_ISLOADING', false)
+      }
+    },
     async addMemberToProject({
       commit,
       dispatch,
@@ -73,8 +105,6 @@ export default new Vuex.Store({
           `${data.message}`,
           'success'
         )
-        commit('SET_NEW_MEMBERS', [])
-        state.isSearchingMember = false
       } catch (err) {
         Swal.fire({
           title: 'Ops...',
@@ -83,6 +113,8 @@ export default new Vuex.Store({
         })
       } finally {
         dispatch('getAllProject')
+        commit('SET_NEW_MEMBERS', [])
+        state.isSearchingMember = false
       }
     },
 

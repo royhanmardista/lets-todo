@@ -119,7 +119,7 @@
           <!-- search member end -->
 
 
-          <h6>Members</h6>
+          <h6 style="cursor:pointer" v-b-toggle="'member'+project._id">Members</h6>
           <!-- member card start -->
           <div class="row mb-3">
             <b-collapse
@@ -145,6 +145,7 @@
                     class="col-md-2 col-2 col-sm-2 d-flex flex-column justify-content-center btn"
                     v-b-popover.hover.top="'remove member'"
                     id="deleteMember"
+                    @click.prevent="removeMember(member._id, project._id)"
                   >
                     <i class="fa fa-trash-o"></i>
                   </div>
@@ -153,15 +154,17 @@
             </b-collapse>
           </div>
           <!-- member card end -->
-          <h6 class="mb-1">Tasks</h6>
+          <h6 style="cursor:pointer" v-b-toggle="'task'+project._id" class="mb-1">Tasks</h6>
+          
           <div class="row mb-3">
             <div v-if="!project.todos.length">
               <p class="ml-3">You have no task in this project ...</p>
             </div>
             <!-- todos card start -->
-            <div
-              class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"
-              id="todoContainer"
+            <b-collapse
+              :visible="true"
+              :id="'task'+project._id"
+              class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"              
               v-for="todo in project.todos"
               :key="todo._id"
             >
@@ -221,7 +224,7 @@
                   </a>
                 </div>
               </div>
-            </div>
+            </b-collapse>
             <!-- end card -->
           </div>
         </b-collapse>
@@ -255,6 +258,9 @@ export default {
     };
   },
   methods: {
+    async removeMember(memberId, projectId) {
+      await this.$store.dispatch('removeMemberFromProject', {memberId, projectId})
+    },
     async addMember(memberId, projectId) {
       this.newMember = ""
       await this.$store.dispatch('addMemberToProject', { memberId, projectId })
