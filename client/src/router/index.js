@@ -53,17 +53,17 @@ const routes = [{
   {
     path: 'today',
     name: 'today',
-    component: () => import(/* webpackChunkName: "today" */ '../components/Today.vue')
+    component: () => import(/* webpackChunkName: "today" */ '../views/Today.vue')
   },
   {
     path: 'week',
     name: 'week',
-    component: () => import(/* webpackChunkName: "week" */ '../components/Week.vue')
+    component: () => import(/* webpackChunkName: "week" */ '../views/Week.vue')
   },
   {
     path: 'project',
     name: 'project',
-    component: () => import(/* webpackChunkName: "project" */ '../components/Project.vue')
+    component: () => import(/* webpackChunkName: "project" */ '../views/Project.vue')
   }
   ]
 }

@@ -17,7 +17,19 @@
           </button>
         </div>
       </div>
-
+      <div v-if="!projects.length">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 com-md-12 col-sm-12">
+              <img class="w-100" src="@/assets/emptyProject.svg" />
+              <p class="text-center" style="font-family: 'Abril Fatface', cursive;">
+                “Yesterday is gone. Tomorrow has not yet come. We have only today. Let us begin.”
+                ― Mother Theresa
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row border-bottom pt-2" v-for="project in projects" :key="project._id">
         <div class="d-flex justify-content-between w-100">
           <div>
@@ -56,7 +68,11 @@
                 >
                   <i class="fa fa-plus-square"></i> Add Task
                 </button>
-                <button class="dropdown-item" v-b-modal.modal-update-project @click.prevent="showAddTodoToProject(project)">
+                <button
+                  class="dropdown-item"
+                  v-b-modal.modal-update-project
+                  @click.prevent="showAddTodoToProject(project)"
+                >
                   <i class="fa fa-pencil"></i> Edit project
                 </button>
                 <button class="dropdown-item" v-b-toggle="'addMember'+project._id">
@@ -184,7 +200,7 @@
                     style="font-family: 'Bree Serif', serif; font-size:0.9rem"
                   >{{todo.title.toUpperCase()}}</div>
                 </div>
-                <div class="d-flex justify-content-between mb-3 pt-3 border-top">
+                <div class="d-flex justify-content-between mb-3 pt-3 border-top" style="font-size:0.9rem">
                   <div class :class="{'text-dark' : todo.status, 'text-warning' : !todo.status}">
                     <i
                       :class="{'fa fa-calendar-times-o' : !todo.status, 'fa fa-calendar-check-o' : todo.status}"
@@ -244,11 +260,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
-import CreateProjectModal from "@/components/CreateProjectModal.vue";
-import AddTodoToProject from "@/components/AddTodoToProject.vue";
-import UpdataProjectModal from "@/components/UpdataProjectModal.vue";
+import { mapState } from 'vuex'
+import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
+import CreateProjectModal from '@/components/CreateProjectModal.vue'
+import AddTodoToProject from '@/components/AddTodoToProject.vue'
+import UpdataProjectModal from '@/components/UpdataProjectModal.vue'
 
 export default {
   components: {
@@ -257,55 +273,55 @@ export default {
     CreateProjectModal,
     UpdataProjectModal
   },
-  name: "Todo",
+  name: 'Todo',
   computed: {
-    ...mapState(["projects", "isLoading", "newMembers", "isSearchingMember"])
+    ...mapState(['projects', 'isLoading', 'newMembers', 'isSearchingMember'])
   },
-  data() {
+  data () {
     return {
-      newMember: ""
-    };
-  },
-  methods: {
-    async removeMember(memberId, projectId) {
-      await this.$store.dispatch("removeMemberFromProject", {
-        memberId,
-        projectId
-      });
-    },
-    async addMember(memberId, projectId) {
-      this.newMember = "";
-      await this.$store.dispatch("addMemberToProject", { memberId, projectId });
-    },
-    async findMember() {
-      await this.$store.dispatch("findMember", this.newMember);
-    },
-    async deleteProject(project) {
-      await this.$store.dispatch("deleteProject", project);
-    },
-    showAddTodoToProject(project) {
-      this.$store.commit("SET_ADD_TODO_TO_PROJECT", project);
-    },
-    showEditModal(todo) {
-      this.$store.commit("SET_EDIT_TODO", todo);
-    },
-    getTodoToday() {
-      this.$store.dispatch("getTodayList");
-    },
-    async completeTodoProject(todo) {
-      await this.$store.dispatch("updateTodoStatus", todo);
-    },
-    async deleteTodoProject(todo) {
-      await this.$store.dispatch("deleteTodoProject", todo);
-    },
-    async updateTodo(todo) {
-      await this.$store.dispatch("updateTodo", todo);
+      newMember: ''
     }
   },
-  created() {
-    this.getTodoToday();
+  methods: {
+    async removeMember (memberId, projectId) {
+      await this.$store.dispatch('removeMemberFromProject', {
+        memberId,
+        projectId
+      })
+    },
+    async addMember (memberId, projectId) {
+      this.newMember = ''
+      await this.$store.dispatch('addMemberToProject', { memberId, projectId })
+    },
+    async findMember () {
+      await this.$store.dispatch('findMember', this.newMember)
+    },
+    async deleteProject (project) {
+      await this.$store.dispatch('deleteProject', project)
+    },
+    showAddTodoToProject (project) {
+      this.$store.commit('SET_ADD_TODO_TO_PROJECT', project)
+    },
+    showEditModal (todo) {
+      this.$store.commit('SET_EDIT_TODO', todo)
+    },
+    getTodoToday () {
+      this.$store.dispatch('getTodayList')
+    },
+    async completeTodoProject (todo) {
+      await this.$store.dispatch('updateTodoStatus', todo)
+    },
+    async deleteTodoProject (todo) {
+      await this.$store.dispatch('deleteTodoProject', todo)
+    },
+    async updateTodo (todo) {
+      await this.$store.dispatch('updateTodo', todo)
+    }
+  },
+  created () {
+    this.getTodoToday()
   }
-};
+}
 </script>
 
 <style scoped>
@@ -344,5 +360,9 @@ h6 {
 
 .complete {
   background-color: #3ddc97 !important;
+}
+
+#todoCard i:hover {
+  color: rgb(27, 87, 199) !important
 }
 </style>

@@ -88,6 +88,7 @@ export default {
   created () {
     this.checkLoginStatus()
     this.getAllProject()
+    this.$store.dispatch('findUser')
   }
 }
 </script>
@@ -119,6 +120,6 @@ a.router-link-exact-active {
 }
 
 #display {
-  min-height: 900px;
+  min-height: 600px;
 }
 </style>

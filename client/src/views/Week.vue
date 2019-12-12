@@ -1,9 +1,13 @@
 <template>
   <div>
     <div class="d-flex justify-content-between">
-      <div>
-        <h3>Today</h3>
-        <p>{{moment().format("dddd, MMMM Do YYYY")}}</p>
+      <div d-flex >
+        <div>
+          <h3>Next 7 Days</h3>
+        </div>
+        <div>
+          <p style="font-size:0.8rem">Here are all your task this week</p>
+        </div>
       </div>
       <div>
         <button class="btn btn-outline-danger" @click="$bvModal.show('modal-add-todo')">
@@ -12,18 +16,18 @@
         <AddTodoModal></AddTodoModal>
       </div>
     </div>
-    <Todo></Todo>
+    <WeeklyTodo></WeeklyTodo>
   </div>
 </template>
 
 <script>
 import AddTodoModal from '@/components/AddTodoModal.vue'
-import Todo from '@/components/Todo.vue'
+import WeeklyTodo from '@/components/WeeklyTodo.vue'
 
 export default {
   components: {
     AddTodoModal,
-    Todo
+    WeeklyTodo
   },
   data () {
     return {}

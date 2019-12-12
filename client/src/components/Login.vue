@@ -74,6 +74,8 @@ export default {
             `${data.message}`,
             'success'
           )
+          console.log(data.user)
+          this.$store.commit('SET_LOGGED_USER', data.user)
           this.$router.push('/home')
         })
         .catch(err => {
