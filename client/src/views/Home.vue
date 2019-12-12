@@ -72,7 +72,6 @@ export default {
   },
   methods: {
     async getAllProject () {
-      console.log('masuk get all project home')
       await this.$store.dispatch('getAllProject')
     },
     logout () {
