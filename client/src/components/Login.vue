@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container-fluid bodycolor pt-3">
+  <div class="frontPage">
+    <div  class="container-fluid bodycolor pt-3">
       <div class="row">
         <div class="col-md-4 offset-md-4 col-sm-12" style="font-family: 'Alatsi', sans-serif;">
           <div class="d-flex justify-content-center">
@@ -101,4 +101,8 @@ Footer {
   bottom: 0;
   margin-top: calc(100vh - 520px); 
 }
+
+/* .frontPage {
+  background-color: #F1D9A7
+} */
 </style>

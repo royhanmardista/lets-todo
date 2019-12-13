@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
+    <Footer style="margin-top: calc(100vh - 670px) !important"></Footer>
   </div>
 </template>
 

@@ -3,8 +3,7 @@
     <footer class="pt-4 pb-2 text-center">
       <div class="d-flex justify-content-center">
         <p class="">
-          &copy; copyright 2019, built with tons of
-          <i class="fa fa-heart"></i> by
+          &copy; copyright 2019, built by
           <a href="https://github.com/royhanmardista">Royhan Mardista</a>
         </p>
       </div>
