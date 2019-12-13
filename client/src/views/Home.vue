@@ -28,26 +28,26 @@
             <i class="fa fa-align-justify"></i>
           </b-navbar-toggle>
           <b-collapse id="side-collapse" is-nav>
-            <ul class="">
-              <li class="mb-2">
+            <b-navbar-nav class="d-flex flex-column ml-3">
+              <b-nav-item class="mb-2">
                 <router-link to="/home/today" >
                   <i class="fa fa-calendar-o"></i> Today
                 </router-link>
-              </li>
-              <li class="mb-2">
+              </b-nav-item>
+              <b-nav-item class="mb-2">
                 <router-link to="/home/week">
                   <i class="fa fa-calendar text-success"></i> Next 7 days
                 </router-link>
-              </li>
-              <li class="mb-2">
+              </b-nav-item>
+              <b-nav-item class="mb-2">
                 <div class="d-flex justify-content-between">
                   <router-link to="/home/project">
                     <i class="fa fa-list-ul text-warning"></i> Projects
                   </router-link>
                 </div>
                 <!-- Elements to collapse -->
-              </li>
-            </ul>
+              </b-nav-item>
+            </b-navbar-nav>
           </b-collapse>
         </div>
         <div class="col-md-10 pt-4 border-left" id="display">

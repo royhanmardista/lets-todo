@@ -1,97 +1,104 @@
 <template>
-  <div class="container-fluid bodycolor pt-3">
-    <div class="row">
-      <div class="col-md-4 offset-md-4 col-sm-12" style="font-family: 'Alatsi', sans-serif;">
-        <div class="d-flex justify-content-center">
-          <img src="../assets/logo.gif" class="img-thumbnail" width="45" />
-        </div>
-        <h4 class="text-center text-dark">Login to your account</h4>
-        <!-- form login -->
-        <div class="col-sm-12">
-          <form
-            id="login"
-            class="border rounded px-4 pt-2 pb-4 shadow border mt-3"
-            style="font-family: 'Solway', serif; font-size:0.8rem"
-          >
-            <h6 class="text-dark mb-4" style="font-family: 'Alatsi', sans-serif;">Sign up in seconds</h6>
+  <div>
+    <div class="container-fluid bodycolor pt-3">
+      <div class="row">
+        <div class="col-md-4 offset-md-4 col-sm-12" style="font-family: 'Alatsi', sans-serif;">
+          <div class="d-flex justify-content-center">
+            <img src="../assets/logo.gif" class="img-thumbnail" width="45" />
+          </div>
+          <h4 class="text-center text-dark">Login to your account</h4>
+          <!-- form login -->
+          <div class="col-sm-12">
+            <form
+              id="login"
+              class="border rounded px-4 pt-2 pb-4 shadow border mt-3"
+              style="font-family: 'Solway', serif; font-size:0.8rem"
+            >
+              <h6
+                class="text-dark mb-4"
+                style="font-family: 'Alatsi', sans-serif;"
+              >Sign up in seconds</h6>
 
-            <div class="form-group">
-              <label for="email_login">Email address</label>
-              <input
-                id="email_login"
-                v-model="email_login"
-                type="email"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input
-                id="password_login"
-                v-model="password_login"
-                type="password"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-inline" style="margin: 5px auto;">
-              <button
-                type="submit"
-                class="btn btn-warning btn-sm btn-block mt-3"
-                @click.prevent="login"
-              >Sign In</button>
-            </div>
-          </form>
+              <div class="form-group">
+                <label for="email_login">Email address</label>
+                <input
+                  id="email_login"
+                  v-model="email_login"
+                  type="email"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input
+                  id="password_login"
+                  v-model="password_login"
+                  type="password"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-inline" style="margin: 5px auto;">
+                <button
+                  type="submit"
+                  class="btn btn-warning btn-sm btn-block mt-3"
+                  @click.prevent="login"
+                >Sign In</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
-import server from '@/api/server.js'
-import Swal from 'sweetalert2'
+import server from "@/api/server.js";
+import Swal from "sweetalert2";
+import Footer from "@/components/Footer.vue";
 
 export default {
-  data () {
+  components: {
+    Footer
+  },
+  data() {
     return {
-      email_login: '',
-      password_login: ''
-    }
+      email_login: "",
+      password_login: ""
+    };
   },
   methods: {
-    login () {
+    login() {
       server
-        .post('/login', {
+        .post("/login", {
           email: this.email_login,
           password: this.password_login
         })
         .then(({ data }) => {
-          localStorage.setItem('token', data.token)
-          Swal.fire(
-            'Loggin Success!',
-            `${data.message}`,
-            'success'
-          )
-          this.$store.commit('SET_LOGGED_USER', data.user)
-          this.$router.push('/home')
+          localStorage.setItem("token", data.token);
+          Swal.fire("Loggin Success!", `${data.message}`, "success");
+          this.$store.commit("SET_LOGGED_USER", data.user);
+          this.$router.push("/home");
         })
         .catch(err => {
-          Swal.fire(
-            'Opps ....!',
-            `${err.response.data.message}`,
-            'error'
-          )
-        })
+          Swal.fire("Opps ....!", `${err.response.data.message}`, "error");
+        });
     },
-    clearForm () {
-      this.email_login = ''
-      this.password_login = ''
+    clearForm() {
+      this.email_login = "";
+      this.password_login = "";
     }
   }
-}
+};
 </script>
 
 <style>
+Footer {
+  z-index: 1;
+  bottom: 0;
+  margin-top: calc(100vh - 520px); 
+}
 </style>

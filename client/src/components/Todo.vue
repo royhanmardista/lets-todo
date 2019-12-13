@@ -8,7 +8,7 @@
     <div v-if="!isLoading" class="container-fluid">
       <div class="row">
         <div v-if="!todayList.length" class="mt-3 ml-1">
-          <div class="container">
+          <div class="container-fluid">
             <div class="row">
               <p style="font-family: 'Arapey', serif;" >Hmmm.... It seems that you have no task today ...</p>
               <div class="col-12 com-md-12 col-sm-12">

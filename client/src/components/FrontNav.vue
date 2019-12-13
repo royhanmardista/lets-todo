@@ -15,19 +15,20 @@
         <b-navbar-toggle class target="nav-collapse">
           <i class="fa fa-align-justify"></i>
         </b-navbar-toggle>
+
         <b-collapse id="nav-collapse" is-nav>
-          <ul class="nav justify-content-end navbar-nav ml-auto">
-            <li class="nav-item pr-2 my-1 ml-1" >
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item class="nav-item ml-1" >
               <router-link class="btn btn-outline-light" to="/login" >
                 <i class="fa fa-sign-in"></i> Login
               </router-link>
-            </li>
-            <li class="nav-item pr-2 my-1 ml-1">
+            </b-nav-item>
+            <b-nav-item class="nav-item ml-1">
               <router-link to="/register" class="btn btn-outline-light">
                 <i class="fa fa-user-plus"></i> Register
               </router-link>
-            </li>
-          </ul>
+            </b-nav-item>
+          </b-navbar-nav>
         </b-collapse>
       </nav>
     </div>
