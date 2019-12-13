@@ -6,11 +6,11 @@
       </div>
     </div>
     <div v-if="!isLoading" class="container-fluid">
-      <div class="row">
-        <div v-if="!todayList.length" class="mt-3 ml-1">
+      <div class="row mt-3 ml-3">
+        <div v-if="!todayList.length" class=" ml-1">
           <div class="container-fluid">
             <div class="row">
-              <p style="font-family: 'Arapey', serif;" >Hmmm.... It seems that you have no task today ...</p>
+              <p class="ml-4" style="font-family: 'Arapey', serif;" >Hmmm.... It seems that you have no task today ...</p>
               <div class="col-12 com-md-12 col-sm-12">
                 <img class="w-100" src="@/assets/empty.svg" />
                 <p
@@ -23,7 +23,7 @@
         </div>
         <div
           :visible="true"
-          class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"
+          class="text-center text-dark col-md-3 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 p-0 mb-3"
           v-for="todo in todayList"
           :key="todo._id"
         >

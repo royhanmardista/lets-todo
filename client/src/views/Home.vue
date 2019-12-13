@@ -50,7 +50,7 @@
             </b-navbar-nav>
           </b-collapse>
         </div>
-        <div class="col-md-10 pt-4 border-left" id="display">
+        <div class="col-md-10 pt-3 border-left" id="display">
           <router-view></router-view>
         </div>
       </div>
@@ -120,5 +120,8 @@ a.router-link-exact-active {
 
 #display {
   min-height: 600px;
+  padding: 0px;
+  
+
 }
 </style>

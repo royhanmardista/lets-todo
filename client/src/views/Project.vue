@@ -1,20 +1,20 @@
 <template>
-  <div>
+  <div class="ml-4">
     <div v-if="isLoading">
       <div class="d-flex justify-content-center mb-3">
         <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
       </div>
     </div>
-    <div v-if="!isLoading" class="container-fluid">
+    <div v-if="!isLoading">
       <div class="d-flex justify-content-between">
         <div>
           <h3>All Projects</h3>
           <p>You have {{projects.length}} projects in total</p>
         </div>
         <div>
-          <button class="btn btn-outline-success" v-b-modal.modal-create-project>
-            <i class="fa fa-plus-circle"></i> Create Project
-          </button>
+          <b-button variant="outline-success" size="sm" v-b-modal.modal-create-project>
+            <i class="fa fa-plus-circle"></i> Add Project
+          </b-button>
         </div>
       </div>
       <div v-if="!projects.length">
@@ -32,11 +32,11 @@
       </div>
       <div class="row border-bottom pt-2" v-for="project in projects" :key="project._id">
         <div class="d-flex justify-content-between w-100">
-          <div>
-            <h3 class="btn projectlist" v-b-toggle="project._id">
-              <i class="fa fa-dot-circle-o"></i>
-              {{project.title}}
-            </h3>
+          <div class="d-flex flex-column">
+            <div class="d-flex">
+              <i class="fa fa-dot-circle-o mr-1 mt-1"></i>
+              <h3 class="projectlist" v-b-toggle="project._id">{{project.title}}</h3>
+            </div>
             <p
               class="ml-4"
               style="font-size:0.7rem"
@@ -78,7 +78,11 @@
                 <button class="dropdown-item" v-b-toggle="'addMember'+project._id">
                   <i class="fa fa-user"></i> Add Member
                 </button>
-                <button v-if="!(project.user._id == loggedUser._id)" class="dropdown-item" @click.prevent="quitProject(project)">
+                <button
+                  v-if="!(project.user._id == loggedUser._id)"
+                  class="dropdown-item"
+                  @click.prevent="quitProject(project)"
+                >
                   <i class="fa fa-share-square-o"></i> Quit Project
                 </button>
                 <button class="dropdown-item" @click.prevent="deleteProject(project)">
@@ -177,7 +181,7 @@
           <!-- member card end -->
           <h6 style="cursor:pointer" v-b-toggle="'task'+project._id" class="mb-1">Tasks</h6>
 
-          <div class="row mb-3">
+          <div class="row mb-3 ml-1 mt-2">
             <div v-if="!project.todos.length">
               <p class="ml-3">You have no task in this project ...</p>
             </div>
@@ -185,7 +189,7 @@
             <b-collapse
               :visible="true"
               :id="'task'+project._id"
-              class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-2"
+              class="text-center text-dark col-md-3 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 p-0 mb-2"
               v-for="todo in project.todos"
               :key="todo._id"
             >
@@ -202,7 +206,10 @@
                     style="font-family: 'Bree Serif', serif; font-size:0.9rem"
                   >{{todo.title.toUpperCase()}}</div>
                 </div>
-                <div class="d-flex justify-content-between mb-3 pt-3 border-top" style="font-size:0.9rem">
+                <div
+                  class="d-flex justify-content-between mb-3 pt-3 border-top"
+                  style="font-size:0.9rem"
+                >
                   <div class :class="{'text-dark' : todo.status, 'text-warning' : !todo.status}">
                     <i
                       :class="{'fa fa-calendar-times-o' : !todo.status, 'fa fa-calendar-check-o' : todo.status}"
@@ -262,11 +269,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
-import CreateProjectModal from '@/components/CreateProjectModal.vue'
-import AddTodoToProject from '@/components/AddTodoToProject.vue'
-import UpdataProjectModal from '@/components/UpdataProjectModal.vue'
+import { mapState } from "vuex";
+import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
+import CreateProjectModal from "@/components/CreateProjectModal.vue";
+import AddTodoToProject from "@/components/AddTodoToProject.vue";
+import UpdataProjectModal from "@/components/UpdataProjectModal.vue";
 
 export default {
   components: {
@@ -275,57 +282,62 @@ export default {
     CreateProjectModal,
     UpdataProjectModal
   },
-  name: 'Todo',
+  name: "Todo",
   computed: {
-    ...mapState(['projects', 'isLoading', 'newMembers', 'isSearchingMember', 'loggedUser'])
+    ...mapState([
+      "projects",
+      "isLoading",
+      "newMembers",
+      "isSearchingMember",
+      "loggedUser"
+    ])
   },
-  data () {
+  data() {
     return {
-      newMember: ''
-    }
+      newMember: ""
+    };
   },
   methods: {
     async quitProject(project) {
-      await this.$store.dispatch('quitProject', project)
+      await this.$store.dispatch("quitProject", project);
     },
-    async removeMember (memberId, projectId) {
-      await this.$store.dispatch('removeMemberFromProject', {
+    async removeMember(memberId, projectId) {
+      await this.$store.dispatch("removeMemberFromProject", {
         memberId,
         projectId
-      })
+      });
     },
-    async addMember (memberId, projectId) {
-      this.newMember = ''
-      await this.$store.dispatch('addMemberToProject', { memberId, projectId })
+    async addMember(memberId, projectId) {
+      this.newMember = "";
+      await this.$store.dispatch("addMemberToProject", { memberId, projectId });
     },
-    async findMember () {
-      await this.$store.dispatch('findMember', this.newMember)
+    async findMember() {
+      await this.$store.dispatch("findMember", this.newMember);
     },
-    async deleteProject (project) {
-      await this.$store.dispatch('deleteProject', project)
+    async deleteProject(project) {
+      await this.$store.dispatch("deleteProject", project);
     },
-    showAddTodoToProject (project) {
-      this.$store.commit('SET_ADD_TODO_TO_PROJECT', project)
+    showAddTodoToProject(project) {
+      this.$store.commit("SET_ADD_TODO_TO_PROJECT", project);
     },
-    showEditModal (todo) {
-      this.$store.commit('SET_EDIT_TODO', todo)
+    showEditModal(todo) {
+      this.$store.commit("SET_EDIT_TODO", todo);
     },
-    getTodoToday () {
-      this.$store.dispatch('getTodayList')
+    getTodoToday() {
+      this.$store.dispatch("getTodayList");
     },
-    async completeTodoProject (todo) {
-      await this.$store.dispatch('updateTodoStatus', todo)
+    async completeTodoProject(todo) {
+      await this.$store.dispatch("updateTodoStatus", todo);
     },
-    async deleteTodoProject (todo) {
-      await this.$store.dispatch('deleteTodoProject', todo)
+    async deleteTodoProject(todo) {
+      await this.$store.dispatch("deleteTodoProject", todo);
     },
-    async updateTodo (todo) {
-      await this.$store.dispatch('updateTodo', todo)
+    async updateTodo(todo) {
+      await this.$store.dispatch("updateTodo", todo);
     }
   },
-  created () {
-  }
-}
+  created() {}
+};
 </script>
 
 <style scoped>
@@ -367,6 +379,6 @@ h6 {
 }
 
 #todoCard i:hover {
-  color: rgb(27, 87, 199) !important
+  color: rgb(27, 87, 199) !important;
 }
 </style>

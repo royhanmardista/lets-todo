@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="ml-4">
     <div class="d-flex justify-content-between">
-      <div d-flex >
+      <div d-flex>
         <div>
           <h3>Next 7 Days</h3>
         </div>
@@ -10,9 +10,9 @@
         </div>
       </div>
       <div>
-        <button class="btn btn-outline-danger" @click="$bvModal.show('modal-add-todo')">
+        <b-button variant="outline-primary" size="sm" @click="$bvModal.show('modal-add-todo')">
           <i class="fa fa-plus-circle"></i> Add Task
-        </button>
+        </b-button>
         <AddTodoModal></AddTodoModal>
       </div>
     </div>

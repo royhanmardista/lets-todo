@@ -25,7 +25,7 @@
             <b-collapse
               :visible="true"
               :id="data.name"
-              class="text-center text-dark col-md-3 col-sm-6 col-6 p-0 mb-4"
+              class="text-center text-dark col-md-3 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 xs-offset-1 p-0 mb-4"
               v-for="todo in data.todos"
               :key="todo._id"
             >
