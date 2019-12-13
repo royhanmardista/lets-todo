@@ -1,6 +1,5 @@
 `use stict`
 module.exports = (err, req, res, next) => {
-    console.log(err)
     if (err.status && err.message ) {
         return res.status(err.status).json({
             message : err.message

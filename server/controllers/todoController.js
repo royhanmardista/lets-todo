@@ -36,7 +36,7 @@ class todoController{
             .catch(next)
     }
 
-    static findAll(req, res, next) {     
+    static findNextWeek(req, res, next) {     
         return Todo.
             find({
                 user : req.user.id
@@ -115,7 +115,6 @@ class todoController{
     static updateStatus(req, res, next) {                
         let status = req.body.status || false
         let doneDate = null
-        console.log(status)
         if (status == true) {
             doneDate = new Date()
         }        

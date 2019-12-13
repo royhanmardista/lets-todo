@@ -17,7 +17,6 @@ module.exports = {
             User.findById(user.id)
                 .then (user => {
                     if (user) {
-                        console.log(user, 'user founded')
                         req.user = user
                         next()
                     } else {
@@ -33,7 +32,6 @@ module.exports = {
         }
     },
     authorize : (req, res, next) => {
-        console.log('masuk authorize')
         Todo.findById(req.params.id)
             .then(todo => {
                 if (todo) {   
@@ -55,15 +53,12 @@ module.exports = {
             .catch(next)
     },
     projectAuth : (req, res, next) => {
-        console.log('masuk authorize project',req.params.id, req.user.id)        
         Project.find({
             _id : req.params.id,
             user : req.user.id,
         })
             .then(project => {
-                console.log(project)
                 if (project.length > 0) {
-                    console.log('masuk next auth')
                     next()
                 } else {
                     next({
@@ -75,7 +70,6 @@ module.exports = {
             .catch(next)
     },
     projectTodoAuth : (req, res, next) => {
-        console.log('masuk authorize todo project',req.params.id, req.user.id)        
         Project.find({
             _id : req.params.id,
             $or : [
@@ -85,7 +79,6 @@ module.exports = {
         })
         .then(project => {
             if (project.length > 0) {
-                console.log('masuk next auth')
                 next()
             } else {
                 next({

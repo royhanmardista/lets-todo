@@ -3,21 +3,71 @@ const Project = require('../models/project')
 const User = require('../models/user')
 const Todo = require('../models/todo')
 
-class projectController { 
+class projectController {
+    
+    static async quitProject(req, res, next) {
+        try {
+
+            let project = await
+            Project.findOneAndUpdate({
+                _id: req.params.id,
+                members: {
+                    $in: req.user._id
+                },
+                user: {
+                    $ne: req.user._id
+                }
+            }, {
+                $pull: {
+                    members: req.user._id
+                }
+            }, {
+                new: true,
+                runValidators: true
+            })
+
+            if (project) {
+                res.json({
+                    message: 'quit member success',
+                    project
+                })
+            } else {
+                next({
+                    status: 400,
+                    message: 'you cannot quit from this project, you are the admin of this project'
+                })
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
 
     static update(req, res, next) {
-        let { title, dueDate, description } = req.body        
-        Project.findOneAndUpdate({ _id : req.params.id}, {title, dueDate, description}, {new : true, runValidators: true})
+        let {
+            title,
+            dueDate,
+            description
+        } = req.body
+        Project.findOneAndUpdate({
+                _id: req.params.id
+            }, {
+                title,
+                dueDate,
+                description
+            }, {
+                new: true,
+                runValidators: true
+            })
             .then(project => {
                 if (project) {
                     res.json({
-                        project : project,
-                        message : 'Project succesfully updated'
+                        project: project,
+                        message: 'Project succesfully updated'
                     })
                 } else {
                     next({
-                        status : 404,
-                        message : 'project not found'
+                        status: 404,
+                        message: 'project not found'
                     })
                 }
             })
@@ -30,81 +80,101 @@ class projectController {
         if (status == true) {
             doneDate = new Date()
         }
-        Todo.findOneAndUpdate({ _id : req.params.todoId}, {status, doneDate}, {new : true, runValidators: true})
+        Todo.findOneAndUpdate({
+                _id: req.params.todoId
+            }, {
+                status,
+                doneDate
+            }, {
+                new: true,
+                runValidators: true
+            })
             .then(todo => {
                 if (todo) {
                     res.json({
-                        todo : todo,
-                        message : 'todo succesfully updated'
+                        todo: todo,
+                        message: 'todo succesfully updated'
                     })
                 } else {
                     next({
-                        status : 404,
-                        message : 'todo not found'
+                        status: 404,
+                        message: 'todo not found'
                     })
                 }
             })
             .catch(next)
     }
-    
+
     static updateTodo(req, res, next) {
-        let { title, dueDate, description } = req.body        
+        let {
+            title,
+            dueDate,
+            description
+        } = req.body
         Todo.findOneAndUpdate({
-                _id : req.params.todoId
-            }, 
-            {
+                _id: req.params.todoId
+            }, {
                 title,
                 description,
                 dueDate
-            },{new : true, runValidators: true})
+            }, {
+                new: true,
+                runValidators: true
+            })
             .then(todo => {
                 if (todo) {
                     res.json({
-                        message : 'todo has been updated',
+                        message: 'todo has been updated',
                         todo,
                     })
                 } else {
                     next({
-                        status : 404,
-                        message : 'todo not found'
+                        status: 404,
+                        message: 'todo not found'
                     })
                 }
             })
             .catch(next)
     }
-    
-    static deleteTodo(req, res, next) {     
-        let projectData = {}   
+
+    static deleteTodo(req, res, next) {
+        let projectData = {}
         Project.findOneAndUpdate({
-            _id : req.params.id,
-            todos : {$in : req.params.todoId}
-            }, 
-            {
-                $pull : {todos : req.params.todoId}
-            }, {new : true, runValidators : true})
+                _id: req.params.id,
+                todos: {
+                    $in: req.params.todoId
+                }
+            }, {
+                $pull: {
+                    todos: req.params.todoId
+                }
+            }, {
+                new: true,
+                runValidators: true
+            })
             .then(project => {
                 if (project) {
                     projectData = project
                     return Todo.findOneAndDelete({
-                            _id : req.params.todoId
-                        })
+                        _id: req.params.todoId
+                    })
                 } else {
-                    throw({
-                        status : 404,
-                        message : 'project or todo not found'
+                    throw ({
+                        status: 404,
+                        message: 'project or todo not found'
                     })
                 }
             })
             .then(todo => {
                 if (todo) {
                     res.json({
-                        message : 'todo succesfully deleted',
-                        project : projectData,
+                        message: 'todo succesfully deleted',
+                        project: projectData,
                     })
                 } else {
                     next({
-                        status : 404,
-                        message : 'todo not found'
+                        status: 404,
+                        message: 'todo not found'
                     })
                 }
             })
@@ -112,34 +182,40 @@ class projectController {
     }
 
     static addTodo(req, res, next) {
-        let { title, dueDate, description } = req.body    
-        console.log('masuk addTodo', title, dueDate, description)    
+        let {
+            title,
+            dueDate,
+            description
+        } = req.body
         Todo.
-            create({
-                title : title,
-                dueDate : dueDate,
-                projectId : req.params.id,
-                description : description
-            })                   
-            .then( todo => {
-                return Project.findOneAndUpdate(
-                        {
-                            _id : req.params.id
-                        }, 
-                        {
-                            $push : {todos : todo}
-                        },{new : true, runValidators : true})            
+        create({
+                title: title,
+                dueDate: dueDate,
+                projectId: req.params.id,
+                description: description
+            })
+            .then(todo => {
+                return Project.findOneAndUpdate({
+                    _id: req.params.id
+                }, {
+                    $push: {
+                        todos: todo
+                    }
+                }, {
+                    new: true,
+                    runValidators: true
+                })
             })
             .then(project => {
                 if (project) {
                     res.json({
-                        message : 'adding todo success',
+                        message: 'adding todo success',
                         project,
-                    })                    
+                    })
                 } else {
                     next({
-                        status : 400,
-                        message : 'adding todo fail'
+                        status: 400,
+                        message: 'adding todo fail'
                     })
                 }
             })
@@ -147,19 +223,23 @@ class projectController {
     }
 
     static create(req, res, next) {
-        let { title, description, dueDate } = req.body        
+        let {
+            title,
+            description,
+            dueDate
+        } = req.body
         Project
             .create({
                 title,
                 description,
-                user : req.user._id,
-                members : req.user._id,
+                user: req.user._id,
+                members: req.user._id,
                 dueDate
             })
             .then(project => {
                 res.status(201).json({
                     project,
-                    message : 'project successfully created'
+                    message: 'project successfully created'
                 })
             })
             .catch(next)
@@ -167,18 +247,18 @@ class projectController {
 
     static destroy(req, res, next) {
         Project.findOneAndDelete({
-                _id : req.params.id
+                _id: req.params.id
             })
             .then(project => {
-                if (project) {                    
+                if (project) {
                     res.json({
                         project,
-                        message : 'project succesfully deleted'
+                        message: 'project succesfully deleted'
                     })
-                }else {
+                } else {
                     next({
-                        status : 404,
-                        message : 'project not found'
+                        status: 404,
+                        message: 'project not found'
                     })
                 }
             })
@@ -187,16 +267,16 @@ class projectController {
 
     static findOne(req, res, next) {
         Project.findById(req.params.id)
-            .populate('members', "-password")  
-            .populate('todos')   
-            .populate('user',"-password")       
+            .populate('members', "-password")
+            .populate('todos')
+            .populate('user', "-password")
             .then(project => {
                 if (project) {
                     res.json(project)
                 } else {
                     next({
-                        status : 404,
-                        message : 'project not found'
+                        status: 404,
+                        message: 'project not found'
                     })
                 }
             })
@@ -206,86 +286,107 @@ class projectController {
     static findAll(req, res, next) {
         Project
             .find({
-                $or : [
-                    {user : req.user.id},
-                    {members : req.user.id}
-                ]    
+                $or: [{
+                        user: req.user.id
+                    },
+                    {
+                        members: req.user.id
+                    }
+                ]
             })
             .populate('todos')
             .populate('members')
-            .populate('user',"-password")
-            .sort({updatedAt : 1})
-            .then(projects => { 
-                res.json(projects)                
+            .populate('user', "-password")
+            .sort({
+                updatedAt: 1
+            })
+            .then(projects => {
+                res.json(projects)
             })
             .catch(next)
     }
 
-    static addMember(req, res, next) {        
-        let { newMember } = req.body
+    static addMember(req, res, next) {
+        let {
+            newMember
+        } = req.body
         User.findById(newMember)
             .then(user => {
                 if (user) {
                     return Project.findOneAndUpdate({
-                                _id : req.params.id, 
-                                members : {$nin : newMember}
-                            }, 
-                            {
-                                $push : {members : newMember}
-                            }, {new : true, runValidators : true})
+                        _id: req.params.id,
+                        members: {
+                            $nin: newMember
+                        }
+                    }, {
+                        $push: {
+                            members: newMember
+                        }
+                    }, {
+                        new: true,
+                        runValidators: true
+                    })
                 } else {
-                    throw({
-                        status : 404,
-                        message : 'we cannot find the new member in our database'
+                    throw ({
+                        status: 404,
+                        message: 'we cannot find the new member in our database'
                     })
                 }
             })
-            .then( project => {
-                if (project) {                    
+            .then(project => {
+                if (project) {
                     res.json({
-                        message : 'add member success',
+                        message: 'add member success',
                         project
                     })
                 } else {
                     next({
-                        status : 400,
-                        message : 'the new member has already been added before'
+                        status: 400,
+                        message: 'the new member has already been added before'
                     })
                 }
             })
             .catch(next)
     }
 
-    static removeMember(req, res, next) {        
-        let newMember  = req.params.memberId
+    static removeMember(req, res, next) {
+        let newMember = req.params.memberId
         User.findById(newMember)
             .then(user => {
-                if (user) {                    
+                if (user) {
                     return Project.findOneAndUpdate({
-                                _id : req.params.id, 
-                                members : {$in : newMember},
-                                user : {$ne : newMember}
-                            }, 
-                            {
-                                $pull : {members : newMember}
-                            }, {new : true, runValidators : true})
+                        _id: req.params.id,
+                        members: {
+                            $in: newMember
+                        },
+                        user: {
+                            $ne: newMember
+                        }
+                    }, {
+                        $pull: {
+                            members: newMember
+                        }
+                    }, {
+                        new: true,
+                        runValidators: true
+                    })
                 } else {
-                    throw({
-                        status : 404,
-                        message : 'we cannot find the member in our database'
+                    throw ({
+                        status: 404,
+                        message: 'we cannot find the member in our database'
                     })
                 }
             })
-            .then( project => {
-                if (project) {                    
+            .then(project => {
+                if (project) {
                     res.json({
-                        message : 'remove member success',
+                        message: 'remove member success',
                         project
                     })
                 } else {
                     next({
-                        status : 400,
-                        message : 'you cannot delete the admin of this project'
+                        status: 400,
+                        message: 'you cannot delete the admin of this project'
                     })
                 }
             })

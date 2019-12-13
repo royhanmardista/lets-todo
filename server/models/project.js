@@ -1,7 +1,6 @@
 `use strict`
 const { Schema, model } = require('mongoose')
 const Todo = require('../models/todo')
-const moment = require('moment')
 
 const projectSchema = new Schema({
     title : {
@@ -32,7 +31,6 @@ const projectSchema = new Schema({
 })
 
 projectSchema.post('findOneAndDelete', async function(doc, next) {
-    console.log('ketrigger', doc._id)
     await Todo.deleteMany({ projectId : doc._id}) 
     next()
 })
