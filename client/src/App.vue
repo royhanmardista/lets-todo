@@ -68,11 +68,13 @@ a:hover {
   color :deepskyblue
 }
 
-h3 {
+h3, h4 {
   font-family: 'Abril Fatface', cursive;
 }
 
 ul {
   list-style-type: none;
- }
+}
+
+
 </style>

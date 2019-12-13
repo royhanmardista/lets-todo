@@ -30,7 +30,7 @@
           <b-collapse id="side-collapse" is-nav>
             <ul class="">
               <li class="mb-2">
-                <router-link to="/home/today">
+                <router-link to="/home/today" >
                   <i class="fa fa-calendar-o"></i> Today
                 </router-link>
               </li>

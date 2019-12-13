@@ -5,9 +5,9 @@
         class="navbarcolor navbar navbar-expand-md d-flex justify-content-between pt-1"
         style="font-family: 'Fredoka One', cursive;"
       >
-        <div class="nav navbar d-flex justify-content-start">
+        <div class="nav navbar d-flex justify-content-start ml-1">
           <router-link to="/" class="wordpress h2">
-            <a class="navbar-brand nav-bar-title">
+            <a class="navbar-brand nav-bar-title" >
               <img src="../assets/logo.gif" class="ml-md-4 mr-2 img-thumbnail" width="35" />Let's Todo
             </a>
           </router-link>
@@ -17,12 +17,12 @@
         </b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <ul class="nav justify-content-end navbar-nav ml-auto">
-            <li class="nav-item pr-3 my-1">
-              <router-link class="btn btn-outline-light" to="/login">
+            <li class="nav-item pr-2 my-1 ml-1" >
+              <router-link class="btn btn-outline-light" to="/login" >
                 <i class="fa fa-sign-in"></i> Login
               </router-link>
             </li>
-            <li class="nav-item pr-3 my-1">
+            <li class="nav-item pr-2 my-1 ml-1">
               <router-link to="/register" class="btn btn-outline-light">
                 <i class="fa fa-user-plus"></i> Register
               </router-link>

@@ -78,7 +78,9 @@
                 <button class="dropdown-item" v-b-toggle="'addMember'+project._id">
                   <i class="fa fa-user"></i> Add Member
                 </button>
-
+                <button v-if="!(project.user._id == loggedUser._id)" class="dropdown-item" @click.prevent="quitProject(project)">
+                  <i class="fa fa-share-square-o"></i> Quit Project
+                </button>
                 <button class="dropdown-item" @click.prevent="deleteProject(project)">
                   <i class="fa fa-trash"></i> Delete Project
                 </button>
@@ -213,7 +215,7 @@
                   </div>
                 </div>
                 <p
-                  style="min-height:100px; text-align:justify !important"
+                  style="min-height:150px; text-align:justify !important"
                   class="card-text border-top border-bottom py-2 text-white"
                 >{{todo.description}}</p>
                 <div class="d-flex justify-content-between">
@@ -223,7 +225,7 @@
                     @click.prevent="completeTodoProject(todo)"
                   >
                     <i
-                      :class="{'fa fa-check-circle text-white' : !todo.status, 'fa fa-times-circle text-danger' : todo.status}"
+                      :class="{'fa fa-check-circle todoUnclompleted' : !todo.status, 'fa fa-times-circle text-danger' : todo.status}"
                     ></i>
                   </a>
                   <a
@@ -275,7 +277,7 @@ export default {
   },
   name: 'Todo',
   computed: {
-    ...mapState(['projects', 'isLoading', 'newMembers', 'isSearchingMember'])
+    ...mapState(['projects', 'isLoading', 'newMembers', 'isSearchingMember', 'loggedUser'])
   },
   data () {
     return {
@@ -283,6 +285,9 @@ export default {
     }
   },
   methods: {
+    async quitProject(project) {
+      await this.$store.dispatch('quitProject', project)
+    },
     async removeMember (memberId, projectId) {
       await this.$store.dispatch('removeMemberFromProject', {
         memberId,
@@ -319,7 +324,6 @@ export default {
     }
   },
   created () {
-    this.getTodoToday()
   }
 }
 </script>

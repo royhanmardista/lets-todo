@@ -7,11 +7,11 @@
       <div class="col-md-5 col-sm-12 text-dark p-4">
         <div class="d-flex flex-column">
           <div
-            class="h1"
+            class="h2"
             style="font-family: 'Francois One', sans-serif;"
           >Let's Todo lets you work more collaboratively and get more done..</div>
           <div
-            class="h5"
+            class="h6"
             style="font-family: 'News Cycle', sans-serif;"
           >Let's Todo's projects, lists, and cards enable you to organize and prioritize your todo in a fun, flexible, and rewarding way.</div>
         </div>
@@ -23,15 +23,15 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    toRegisterPage() {
-      this.$router.push("/register");
+    toRegisterPage () {
+      this.$router.push('/register')
     }
   }
-};
+}
 </script>
 
 <style>

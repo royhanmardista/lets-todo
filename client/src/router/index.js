@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [{
   path: '/',
-  component: () => import(/* webpackChunkName: "frontnav" */ '../views/FrontNav.vue'),
+  component: () => import(/* webpackChunkName: "frontnav" */ '../components/FrontNav.vue'),
   beforeEnter: (to, from, next) => {
     if (localStorage.getItem('token')) {
       next('/home')
@@ -64,21 +64,19 @@ const routes = [{
 }
 ]
 
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
-})
-
-router.beforeEach((to, from, next) => {
-  if (to.matched.some === '/home') {
-    if (!localStorage.getItem('token')) {
-      next('/login')
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    console.log('ketriger', savedPosition)
+    if (savedPosition) {
+      return savedPosition
     } else {
-      next()
+      return { x: 0, y: 0 }
     }
-  } else {
-    next()
   }
 })
+
 export default router

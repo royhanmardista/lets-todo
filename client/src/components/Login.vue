@@ -5,12 +5,12 @@
         <div class="d-flex justify-content-center">
           <img src="../assets/logo.gif" class="img-thumbnail" width="45" />
         </div>
-        <h3 class="text-center text-dark">Login to your account</h3>
+        <h4 class="text-center text-dark">Login to your account</h4>
         <!-- form login -->
-        <div class="col-sm-12 mt-3">
+        <div class="col-sm-12">
           <form
             id="login"
-            class="border rounded p-3 shadow border mt-4"
+            class="border rounded px-4 pt-2 pb-4 shadow border mt-3"
             style="font-family: 'Solway', serif; font-size:0.8rem"
           >
             <h6 class="text-dark mb-4" style="font-family: 'Alatsi', sans-serif;">Sign up in seconds</h6>
@@ -38,7 +38,7 @@
             <div class="form-inline" style="margin: 5px auto;">
               <button
                 type="submit"
-                class="btn btn-warning btn-sm btn-block mt-1"
+                class="btn btn-warning btn-sm btn-block mt-3"
                 @click.prevent="login"
               >Sign In</button>
             </div>

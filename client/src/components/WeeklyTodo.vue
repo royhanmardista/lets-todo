@@ -58,7 +58,7 @@
                   </div>
                 </div>
                 <p
-                  style="min-height:100px; text-align:justify !important"
+                  style="min-height:150px; text-align:justify !important"
                   class="card-text border-top border-bottom py-2 text-white"
                 >{{todo.description}}</p>
                 <div class="d-flex justify-content-between">
@@ -68,7 +68,7 @@
                     @click.prevent="completeTodo(todo)"
                   >
                     <i
-                      :class="{'fa fa-check-circle text-white' : !todo.status, 'fa fa-times-circle text-danger' : todo.status}"
+                      :class="{'fa fa-check-circle todoUnclompleted' : !todo.status, 'fa fa-times-circle text-danger' : todo.status}"
                     ></i>
                   </a>
                   <a

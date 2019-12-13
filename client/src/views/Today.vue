@@ -3,10 +3,8 @@
     <div class="d-flex justify-content-between">
       <div d-flex >
         <div>
-          <h3>Today</h3>
-        </div>
-        <div>
-          <p style="font-size:0.8rem">{{moment().format("dddd, MMMM Do YYYY")}}</p>
+          <span class="h3 pr-2" style="font-family: 'Abril Fatface', cursive;">Today</span>
+          <span class="text-seconday" style="font-size:0.7rem">{{moment().format("dddd, MMMM Do YYYY")}}</span>
         </div>
       </div>
       <div>

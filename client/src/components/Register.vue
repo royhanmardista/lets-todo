@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-center">
           <img src="../assets/logo.gif" class="img-thumbnail" width="45" />
         </div>
-        <h3 class="text-center text-dark">Let's get started</h3>
+        <h4 class="text-center text-dark">Let's get started</h4>
         <div class="col-sm-12">
           <h5 class="text-center text-dark">First, create your account.</h5>
           <form
