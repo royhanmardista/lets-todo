@@ -14,9 +14,12 @@ https://documenter.getpostman.com/view/9288133/SW14UGTA?version=latest
 ## Fitures
 
 - the card will display due date, due time, title, disciption of each of your task
-- when you first creting task the card color will be red indicating that the task is incomplete
+- when you first creating task the card color will be red indicating that the task is incomplete
 - if you complete the task the card will turn green and the date and time will change to current date and time
-- you can filter only for today task, or you can view you tasks until next week
+- you can filter only for today task, or you can view your tasks until next week
+- when creating task or project the minimum date and time is current time
+- user can search a new member using email or username
+- when adding a new member the website will confirm if there is duplicated member
 
 ## Framework and Libraries
 
