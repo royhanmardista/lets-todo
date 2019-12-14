@@ -1,6 +1,8 @@
 # lets-todo
 
 first project using vue-x
+http://letstodo.royhan-mardista.online/
+
 ## Description
 
 this webite works similarly with todoist.com and trello.com, but only small portions of their fitures is implemented here. Basiclly an authenticated user are allowed to crate a project, add tasks to the project then invite new member to complete the project together, user can also create task without creating project.
@@ -64,5 +66,5 @@ https://documenter.getpostman.com/view/9288133/SW14UGTA?version=latest
 
 ### Authorized member in project
 - read project
-- update, delete, patch task status in the project
+- create, update, delete, patch task status in the project
 - quit project
