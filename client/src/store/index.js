@@ -17,10 +17,14 @@ export default new Vuex.Store({
     isSearchingMember: false,
     loggedUser: {},
     weeklyTodos: [],
-    overdueTodos:[]
+    overdueTodos: [],
+    completedTodos: []
   },
   mutations: {
     // mutations for project
+    SET_COMPLETED_TASK(state, payload) {
+      state.completedTodos = payload
+    },
     SET_OVERDUE_TASK(state, payload) {
       state.overdueTodos = payload
     },
@@ -385,16 +389,43 @@ export default new Vuex.Store({
     },
 
     // actions for todo ---------------------------------------------------------------------------------------------------------------------
-    async getOverdueTodo({commit}) {
+    async getCompletedTodo({
+      commit
+    }) {
       try {
         commit('SET_ISLOADING', true)
-        const { data } = await server.get('/todo/overdue',{
-          headers : {
-            token : localStorage.getItem('token')
+        const {
+          data
+        } = await server.get('todo/completed', {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+        commit('SET_COMPLETED_TASK', data)
+      } catch (err) {
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
+      } finally {
+        commit('SET_ISLOADING', false)
+      }
+    },
+    async getOverdueTodo({
+      commit
+    }) {
+      try {
+        commit('SET_ISLOADING', true)
+        const {
+          data
+        } = await server.get('/todo/overdue', {
+          headers: {
+            token: localStorage.getItem('token')
           }
         })
         commit('SET_OVERDUE_TASK', data)
-      } catch(err) {
+      } catch (err) {
         Swal.fire({
           title: 'Ops...',
           icon: 'error',
@@ -450,10 +481,7 @@ export default new Vuex.Store({
             'Updated!',
             `${data.message}`,
             'success'
-          )
-          dispatch('getOverdueTodo')
-          dispatch('getTodayList')
-          dispatch('getWeeklyTodo')
+          )          
         })
         .catch(err => {
           Swal.fire({
@@ -461,6 +489,12 @@ export default new Vuex.Store({
             icon: 'error',
             text: err.response.data.message
           })
+        })
+        .finally(()=> {
+          dispatch('getOverdueTodo')
+          dispatch('getTodayList')
+          dispatch('getWeeklyTodo')
+          dispatch('getCompletedTodo')
         })
     },
     deleteTodo({
@@ -492,6 +526,8 @@ export default new Vuex.Store({
               dispatch('getOverdueTodo')
               dispatch('getTodayList')
               dispatch('getWeeklyTodo')
+              dispatch('getCompletedTodo')
+
             })
             .catch(err => {
               Swal.fire({
@@ -580,6 +616,7 @@ export default new Vuex.Store({
             dispatch('getOverdueTodo')
             dispatch('getTodayList')
             dispatch('getWeeklyTodo')
+            dispatch('getCompletedTodo')
           }
         })
         .catch(err => {

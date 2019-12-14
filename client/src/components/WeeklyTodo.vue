@@ -106,7 +106,7 @@ export default {
   components: {
     UpdateTodoModal
   },
-  name: 'Todo',
+  name: 'week',
   computed: {
     ...mapState(['weeklyTodos', 'isLoading'])
   },

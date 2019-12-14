@@ -64,6 +64,11 @@ const routes = [{
     path: 'overdue',
     name: 'overdue',
     component: () => import(/* webpackChunkName: "overdue" */ '../views/OverdueTask.vue')
+  },
+  {
+    path: 'completed',
+    name: 'completed',
+    component: () => import(/* webpackChunkName: "completed" */ '../views/CompletedTask.vue')
   }
   ]
 }

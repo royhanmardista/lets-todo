@@ -45,6 +45,11 @@
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
+                <router-link to="/home/completed">
+                  <i class="fa fa-calendar-check-o text-success"></i> Completed Tasks
+                </router-link>
+              </b-nav-item>
+              <b-nav-item class="mb-2">
                 <div class="d-flex justify-content-between">
                   <router-link to="/home/project">
                     <i class="fa fa-list-ul text-warning"></i> Projects

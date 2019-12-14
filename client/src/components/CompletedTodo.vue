@@ -7,15 +7,15 @@
     </div>
     <div v-if="!isLoading" class="container-fluid">
       <div class="row mt-3 ml-3">
-        <div v-if="!overdueTodos.length" class="ml-1">
+        <div v-if="!completedTodos.length" class="ml-1">
           <div class="container-fluid">
             <div class="row">
               <p
                 class="ml-4"
                 style="font-family: 'Arapey', serif;"
-              >Wow... You have no overdue tasks, You have completed every task, well done ...</p>
+              >You haven't completed any tasks</p>
               <div class="col-12 com-md-12 col-sm-12">
-                <img class="w-100" src="@/assets/emptyoverdue.svg" />
+                <img class="w-100" src="@/assets/emptycompleted.svg" />
                 <p
                   class="text-center"
                   style="font-family: 'Abril Fatface', cursive;"
@@ -27,7 +27,7 @@
         <div
           :visible="true"
           class="text-center text-dark col-md-3 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 p-0 mb-3"
-          v-for="todo in overdueTodos"
+          v-for="todo in completedTodos"
           :key="todo._id"
         >
           <div
@@ -105,9 +105,9 @@ export default {
   components: {
     UpdateTodoModal
   },
-  name: "overdue",
+  name: "completed",
   computed: {
-    ...mapState(["overdueTodos", "isLoading"])
+    ...mapState(["completedTodos", "isLoading"])
   },
   data() {
     return {};
@@ -116,8 +116,8 @@ export default {
     showEditModal(todo) {
       this.$store.commit("SET_EDIT_TODO", todo);
     },
-    getOverdueTodo() {
-      this.$store.dispatch("getOverdueTodo");
+    getCompletedTodo() {
+      this.$store.dispatch("getCompletedTodo");
     },
     async completeTodo(todo) {
       await this.$store.dispatch("updateTodoStatus", todo);
@@ -130,12 +130,8 @@ export default {
     }
   },
   created() {
-    this.getOverdueTodo();
-  },
-  // beforeRouteEnter(to, from, next) {
-  //   this.getOverdueTodo();
-  //   next();
-  // }
+    this.getCompletedTodo();
+  },  
 };
 </script>
 
