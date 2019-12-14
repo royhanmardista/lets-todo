@@ -1,7 +1,7 @@
 # lets-todo
 
 first project using vue-x
-http://letstodo.royhan-mardista.online/
+http://letstodo.royhan-mardista.online/, I deployed both server and bucket in google cloud platform
 
 ## Description
 
