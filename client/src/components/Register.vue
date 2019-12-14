@@ -76,7 +76,6 @@
         </div>
       </div>
     </div>
-    <Footer style="margin-top: calc(100vh - 670px) !important"></Footer>
   </div>
 </template>
 
@@ -84,11 +83,9 @@
 // import GSignInButton from 'vue-google-signin-button'
 import server from "@/api/server.js";
 import Swal from "sweetalert2";
-import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
-    Footer,
     // GSignInButton
   },
   data() {

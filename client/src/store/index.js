@@ -16,10 +16,14 @@ export default new Vuex.Store({
     newMembers: [],
     isSearchingMember: false,
     loggedUser: {},
-    weeklyTodos: []
+    weeklyTodos: [],
+    overdueTodos:[]
   },
   mutations: {
     // mutations for project
+    SET_OVERDUE_TASK(state, payload) {
+      state.overdueTodos = payload
+    },
     SET_WEEK_LIST(state, payload) {
       state.weeklyTodos = payload
       state.isLoading = false
@@ -380,7 +384,26 @@ export default new Vuex.Store({
         })
     },
 
-    // actions for todo
+    // actions for todo ---------------------------------------------------------------------------------------------------------------------
+    async getOverdueTodo({commit}) {
+      try {
+        commit('SET_ISLOADING', true)
+        const { data } = await server.get('/todo/overdue',{
+          headers : {
+            token : localStorage.getItem('token')
+          }
+        })
+        commit('SET_OVERDUE_TASK', data)
+      } catch(err) {
+        Swal.fire({
+          title: 'Ops...',
+          icon: 'error',
+          text: err.response.data.message
+        })
+      } finally {
+        commit('SET_ISLOADING', false)
+      }
+    },
     getWeeklyTodo({
       commit
     }) {
@@ -428,6 +451,7 @@ export default new Vuex.Store({
             `${data.message}`,
             'success'
           )
+          dispatch('getOverdueTodo')
           dispatch('getTodayList')
           dispatch('getWeeklyTodo')
         })
@@ -465,6 +489,7 @@ export default new Vuex.Store({
                 `${data.message}`,
                 'success'
               )
+              dispatch('getOverdueTodo')
               dispatch('getTodayList')
               dispatch('getWeeklyTodo')
             })
@@ -552,6 +577,7 @@ export default new Vuex.Store({
           if (payload.projectId) {
             dispatch('getAllProject')
           } else {
+            dispatch('getOverdueTodo')
             dispatch('getTodayList')
             dispatch('getWeeklyTodo')
           }

@@ -59,6 +59,11 @@ const routes = [{
     path: 'project',
     name: 'project',
     component: () => import(/* webpackChunkName: "project" */ '../views/Project.vue')
+  },
+  {
+    path: 'overdue',
+    name: 'overdue',
+    component: () => import(/* webpackChunkName: "overdue" */ '../views/OverdueTask.vue')
   }
   ]
 }

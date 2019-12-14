@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-center">
         <p class="">
           &copy; copyright 2019, built by
-          <a href="https://github.com/royhanmardista">Royhan Mardista</a>
+          <a href="https://github.com/royhanmardista/lets-todo">Royhan Mardista</a>
         </p>
       </div>
     </footer>
@@ -25,7 +25,7 @@ footer p {
   color: white;
 }
 
-footer p i {
-  color: red;
+footer a {
+  color: rgb(90, 123, 235);
 }
 </style>

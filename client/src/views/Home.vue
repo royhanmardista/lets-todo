@@ -40,6 +40,11 @@
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
+                <router-link to="/home/overdue">
+                  <i class="fa fa-calendar-times-o text-danger"></i> Overdue Tasks
+                </router-link>
+              </b-nav-item>
+              <b-nav-item class="mb-2">
                 <div class="d-flex justify-content-between">
                   <router-link to="/home/project">
                     <i class="fa fa-list-ul text-warning"></i> Projects
@@ -111,7 +116,8 @@ export default {
 }
 
 a.router-link-exact-active {
-  font-weight: bolder;
+  color: rgb(42, 51, 33);
+  font-weight: 900;
 }
 
 .navbar {
@@ -120,8 +126,11 @@ a.router-link-exact-active {
 
 #display {
   min-height: 600px;
-  padding: 0px;
-  
+  padding: 0px; 
+}
 
+a {
+  color: rgb(26, 92, 236);
+  font-weight: 500
 }
 </style>

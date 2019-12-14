@@ -51,18 +51,15 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import server from "@/api/server.js";
 import Swal from "sweetalert2";
-import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
-    Footer
   },
   data() {
     return {
@@ -96,11 +93,6 @@ export default {
 </script>
 
 <style>
-Footer {
-  z-index: 1;
-  bottom: 0;
-  margin-top: calc(100vh - 520px); 
-}
 
 /* .frontPage {
   background-color: #F1D9A7

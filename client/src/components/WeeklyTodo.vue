@@ -19,7 +19,7 @@
             </div>
           </div>
           <div class="row">
-              <b-collapse class="text-center ml-3" v-if="!data.todos.length" :id="data.name" :visible="true" style="font-size:0.7rem">
+              <b-collapse class="ml-3" v-if="!data.todos.length" :id="data.name" :visible="true" style="font-size:0.7rem">
                   <p>Hmmm.... It seems that you have no task this {{data.name.split(',')[0]}}</p>
             </b-collapse>
             <b-collapse
