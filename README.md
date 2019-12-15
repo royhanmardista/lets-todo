@@ -21,7 +21,7 @@ https://documenter.getpostman.com/view/9288133/SW14UGTA?version=latest
 - user can search a new member using email or username
 - when adding a new member the website will confirm if there is duplicated member
 - checking all overdue tasks and completed task
-- adding goggle outh login
+- adding google OAuth login
 
 ## Framework and Libraries
 
