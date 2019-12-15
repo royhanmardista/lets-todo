@@ -15,6 +15,6 @@ router.put('/:id/todo/:todoId', projectTodoAuth, projectController.updateTodo)
 router.patch('/:id/status/:todoId', projectTodoAuth, projectController.updateTodoStatus)
 router.put('/:id/delete/todo/:todoId', projectTodoAuth, projectController.deleteTodo)
 router.delete('/:id/remove/member/:memberId', projectAuth, projectController.removeMember)
-router.put('/:id/quit', projectController.quitProject)
+router.delete('/:id/quit', projectController.quitProject)
 
 module.exports = router

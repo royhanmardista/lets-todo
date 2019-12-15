@@ -81,76 +81,76 @@
 </template>
 
 <script>
-import GSignInButton from "vue-google-signin-button";
-import server from "@/api/server.js";
-import Swal from "sweetalert2";
+import GSignInButton from 'vue-google-signin-button'
+import server from '@/api/server.js'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
     GSignInButton
   },
-  data() {
+  data () {
     return {
       googleSignInParams: {
         client_id:
-          "628697528399-tm5hqkb025uttnahfoj889flu2jg3hvm.apps.googleusercontent.com"
+          '628697528399-tm5hqkb025uttnahfoj889flu2jg3hvm.apps.googleusercontent.com'
       },
-      email_register: "",
-      password_register: "",
-      username_register: ""
-    };
+      email_register: '',
+      password_register: '',
+      username_register: ''
+    }
   },
   methods: {
-    onSignInSuccess(googleUser) {
-      let profile = googleUser.getBasicProfile();
-      let id_token = googleUser.getAuthResponse().id_token
+    onSignInSuccess (googleUser) {
+      let profile = googleUser.getBasicProfile()
+      let idToken = googleUser.getAuthResponse().id_token
       server
-        .post("/login-google", {
-          google_token: id_token
+        .post('/login-google', {
+          google_token: idToken
         })
         .then(({ data }) => {
-          localStorage.setItem("token", data.token)
+          localStorage.setItem('token', data.token)
           Swal.fire('Loggin Success!', `${data.message}`, 'success')
           this.$store.commit('SET_LOGGED_USER', data.user)
           this.$router.push('/home')
         })
         .catch(err => {
-          Swal.fire("Opps ....!", `${err.response.data.message}`, "error");
-        });
+          Swal.fire('Opps ....!', `${err.response.data.message}`, 'error')
+        })
     },
-    onSignInError(error) {
-      console.log("OH NOES", error);
+    onSignInError (error) {
+      console.log('OH NOES', error)
     },
-    register() {
+    register () {
       server
-        .post("/register", {
+        .post('/register', {
           username: this.username_register,
           email: this.email_register,
           password: this.password_register
         })
         .then(({ data }) => {
           Swal.fire({
-            icon: "success",
-            title: "New User Created!",
+            icon: 'success',
+            title: 'New User Created!',
             text: `${data.message}`
-          });
-          this.$router.push("/login");
+          })
+          this.$router.push('/login')
         })
         .catch(err => {
           Swal.fire(
-            "Opps ....!",
-            `${err.response.data.message.join(", ")}`,
-            "error"
-          );
-        });
+            'Opps ....!',
+            `${err.response.data.message.join(', ')}`,
+            'error'
+          )
+        })
     },
-    clearForm() {
-      this.email_register = "";
-      this.username_register = "";
-      this.password_register = "";
+    clearForm () {
+      this.email_register = ''
+      this.username_register = ''
+      this.password_register = ''
     }
   }
-};
+}
 </script>
 
 <style>

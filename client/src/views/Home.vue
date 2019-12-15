@@ -74,51 +74,50 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
   computed: {
     ...mapState([
-      "isLoading",
-      "projects",
-      "overdueTodos",
-      "completedTodos",
-      "todayList",
-      "weeklyTodos"
+      'isLoading',
+      'projects',
+      'overdueTodos',
+      'completedTodos',
+      'todayList',
+      'weeklyTodos'
     ])
   },
-  data() {
+  data () {
     return {
       home: true
-    };
+    }
   },
   methods: {
-    async getAllProject() {
-      await this.$store.dispatch("getAllProject");
+    async getAllProject () {
+      await this.$store.dispatch('getAllProject')
     },
-    logout() {
-      localStorage.removeItem("token");
-      let auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function() {
-        ceckStatus();
-      });
-      this.$router.push("/");
+    logout () {
+      localStorage.removeItem('token')
+      let auth2 = gapi.auth2.getAuthInstance()
+      auth2.signOut().then(function () {
+        this.$router.push('/')
+      })
     },
-    checkLoginStatus() {
-      if (!localStorage.getItem("token")) {
-        this.$router.push("/");
+    checkLoginStatus () {
+      if (!localStorage.getItem('token')) {
+        this.$router.push('/')
       }
     }
   },
-  created() {
-    this.checkLoginStatus();
-    this.getAllProject();
-    this.$store.dispatch("findUser");
-    this.$store.dispatch("getCompletedTodo");
-    this.$store.dispatch("getOverdueTodo");
-    this.$store.dispatch("getWeeklyTodo");
+  created () {
+    this.checkLoginStatus()
+    this.getAllProject()
+    this.$store.dispatch('findUser')
+    this.$store.dispatch('getCompletedTodo')
+    this.$store.dispatch('getOverdueTodo')
+    this.$store.dispatch('getWeeklyTodo')
   }
-};
+}
 </script>
 
 <style>

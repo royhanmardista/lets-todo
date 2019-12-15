@@ -20,6 +20,8 @@ https://documenter.getpostman.com/view/9288133/SW14UGTA?version=latest
 - when creating task or project the minimum date and time is current time
 - user can search a new member using email or username
 - when adding a new member the website will confirm if there is duplicated member
+- checking all overdue tasks and completed task
+- adding goggle outh login
 
 ## Framework and Libraries
 
