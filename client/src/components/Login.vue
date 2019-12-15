@@ -55,41 +55,41 @@
 </template>
 
 <script>
-import server from "@/api/server.js";
-import Swal from "sweetalert2";
+import server from '@/api/server.js'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
   },
-  data() {
+  data () {
     return {
-      email_login: "",
-      password_login: ""
-    };
+      email_login: '',
+      password_login: ''
+    }
   },
   methods: {
-    login() {
+    login () {
       server
-        .post("/login", {
+        .post('/login', {
           email: this.email_login,
           password: this.password_login
         })
         .then(({ data }) => {
-          localStorage.setItem("token", data.token);
-          Swal.fire("Loggin Success!", `${data.message}`, "success");
-          this.$store.commit("SET_LOGGED_USER", data.user);
-          this.$router.push("/home");
+          localStorage.setItem('token', data.token)
+          Swal.fire('Loggin Success!', `${data.message}`, 'success')
+          this.$store.commit('SET_LOGGED_USER', data.user)
+          this.$router.push('/home')
         })
         .catch(err => {
-          Swal.fire("Opps ....!", `${err.response.data.message}`, "error");
-        });
+          Swal.fire('Opps ....!', `${err.response.data.message}`, 'error')
+        })
     },
-    clearForm() {
-      this.email_login = "";
-      this.password_login = "";
+    clearForm () {
+      this.email_login = ''
+      this.password_login = ''
     }
   }
-};
+}
 </script>
 
 <style>

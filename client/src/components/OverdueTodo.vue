@@ -98,45 +98,45 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
+import { mapState } from 'vuex'
+import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
 
 export default {
   components: {
     UpdateTodoModal
   },
-  name: "overdue",
+  name: 'overdue',
   computed: {
-    ...mapState(["overdueTodos", "isLoading"])
+    ...mapState(['overdueTodos', 'isLoading'])
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    showEditModal(todo) {
-      this.$store.commit("SET_EDIT_TODO", todo);
+    showEditModal (todo) {
+      this.$store.commit('SET_EDIT_TODO', todo)
     },
-    getOverdueTodo() {
-      this.$store.dispatch("getOverdueTodo");
+    getOverdueTodo () {
+      this.$store.dispatch('getOverdueTodo')
     },
-    async completeTodo(todo) {
-      await this.$store.dispatch("updateTodoStatus", todo);
+    async completeTodo (todo) {
+      await this.$store.dispatch('updateTodoStatus', todo)
     },
-    async deleteTodo(todo) {
-      await this.$store.dispatch("deleteTodo", todo);
+    async deleteTodo (todo) {
+      await this.$store.dispatch('deleteTodo', todo)
     },
-    async updateTodo(todo) {
-      await this.$store.dispatch("updateTodo", todo);
+    async updateTodo (todo) {
+      await this.$store.dispatch('updateTodo', todo)
     }
   },
-  created() {
-    this.getOverdueTodo();
-  },
+  created () {
+    this.getOverdueTodo()
+  }
   // beforeRouteEnter(to, from, next) {
   //   this.getOverdueTodo();
   //   next();
   // }
-};
+}
 </script>
 
 <style>

@@ -5,7 +5,7 @@
           <span class="h3 pr-1" style="font-family: 'Abril Fatface', cursive;">Overdue Task</span>
           <span class="text-seconday" style="font-size:0.7rem">{{moment().format("dddd, MMMM Do YYYY")}}</span>
         </div>
-      <div>        
+      <div>
       </div>
     </div>
     <OverdueTodo></OverdueTodo>

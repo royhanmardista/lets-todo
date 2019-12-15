@@ -22,49 +22,49 @@ export default new Vuex.Store({
   },
   mutations: {
     // mutations for project
-    SET_COMPLETED_TASK(state, payload) {
+    SET_COMPLETED_TASK (state, payload) {
       state.completedTodos = payload
     },
-    SET_OVERDUE_TASK(state, payload) {
+    SET_OVERDUE_TASK (state, payload) {
       state.overdueTodos = payload
     },
-    SET_WEEK_LIST(state, payload) {
+    SET_WEEK_LIST (state, payload) {
       state.weeklyTodos = payload
       state.isLoading = false
     },
-    SET_LOGGED_USER(state, user) {
+    SET_LOGGED_USER (state, user) {
       state.loggedUser = user
       state.isLoading = false
     },
-    SET_NEW_MEMBERS(state, payload) {
+    SET_NEW_MEMBERS (state, payload) {
       state.newMembers = payload
       state.isSearchingMember = true
     },
-    SET_ADD_TODO_TO_PROJECT(state, payload) {
+    SET_ADD_TODO_TO_PROJECT (state, payload) {
       state.project = payload
       state.project.date = moment(payload.dueDate).format('YYYY-M-D')
       state.project.time = moment(payload.dueDate).format('HH:mm')
     },
-    SET_PROJECTS(state, payload) {
+    SET_PROJECTS (state, payload) {
       state.projects = payload
     },
     // mutations for task
-    SET_EDIT_TODO(state, payload) {
+    SET_EDIT_TODO (state, payload) {
       state.editTodo = payload
       state.editTodo.date = moment(payload.dueDate).format('YYYY-M-D')
       state.editTodo.time = moment(payload.dueDate).format('HH:mm')
     },
-    SET_TODAY_LIST(state, payload) {
+    SET_TODAY_LIST (state, payload) {
       state.todayList = payload
       state.isLoading = false
     },
-    SET_ISLOADING(state, payload) {
+    SET_ISLOADING (state, payload) {
       state.isLoading = payload
     }
   },
   actions: {
     // action for project
-    async quitProject({
+    async quitProject ({
       dispatch
     }, project) {
       const confirm = await Swal.fire({
@@ -100,8 +100,8 @@ export default new Vuex.Store({
         }
       }
     },
-    async findUser({
-      commit,
+    async findUser ({
+      commit
     }) {
       commit('SET_ISLOADING', true)
       const {
@@ -115,7 +115,7 @@ export default new Vuex.Store({
       commit('SET_LOGGED_USER', data.user)
       commit('SET_ISLOADING', false)
     },
-    async updateProject({
+    async updateProject ({
       dispatch,
       state
     }) {
@@ -145,7 +145,7 @@ export default new Vuex.Store({
         })
       }
     },
-    async removeMemberFromProject({
+    async removeMemberFromProject ({
       dispatch
     }, {
       memberId,
@@ -173,7 +173,7 @@ export default new Vuex.Store({
         })
       }
     },
-    async addMemberToProject({
+    async addMemberToProject ({
       commit,
       dispatch,
       state
@@ -210,7 +210,7 @@ export default new Vuex.Store({
       }
     },
 
-    async findMember({
+    async findMember ({
       commit
     }, newMember) {
       try {
@@ -226,7 +226,7 @@ export default new Vuex.Store({
         })
       }
     },
-    async deleteProject({
+    async deleteProject ({
       dispatch
     }, project) {
       const confirm = await Swal.fire({
@@ -262,7 +262,7 @@ export default new Vuex.Store({
         }
       }
     },
-    async createProject({
+    async createProject ({
       dispatch
     }, project) {
       let {
@@ -296,7 +296,7 @@ export default new Vuex.Store({
         })
       }
     },
-    deleteTodoProject({
+    deleteTodoProject ({
       dispatch
     }, todo) {
       Swal.fire({
@@ -310,10 +310,10 @@ export default new Vuex.Store({
       }).then(function (result) {
         if (result.value) {
           server.put(`/project/${todo.projectId}/delete/todo/${todo._id}`, {}, {
-              headers: {
-                token: localStorage.getItem('token')
-              }
-            })
+            headers: {
+              token: localStorage.getItem('token')
+            }
+          })
             .then(({
               data
             }) => {
@@ -334,18 +334,18 @@ export default new Vuex.Store({
         }
       })
     },
-    addTodoToProject({
+    addTodoToProject ({
       dispatch
     }, payload) {
       server.put(`/project/${payload.projectId}/todo`, {
-          title: payload.title,
-          dueDate: payload.dueDate,
-          description: payload.description
-        }, {
-          headers: {
-            token: localStorage.getItem('token')
-          }
-        })
+        title: payload.title,
+        dueDate: payload.dueDate,
+        description: payload.description
+      }, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(({
           data
         }) => {
@@ -364,15 +364,15 @@ export default new Vuex.Store({
           })
         })
     },
-    getAllProject({
+    getAllProject ({
       commit
     }) {
       commit('SET_ISLOADING', true)
       server.get(`/project`, {
-          headers: {
-            token: localStorage.getItem('token')
-          }
-        })
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(({
           data
         }) => {
@@ -389,7 +389,7 @@ export default new Vuex.Store({
     },
 
     // actions for todo ---------------------------------------------------------------------------------------------------------------------
-    async getCompletedTodo({
+    async getCompletedTodo ({
       commit
     }) {
       try {
@@ -412,7 +412,7 @@ export default new Vuex.Store({
         commit('SET_ISLOADING', false)
       }
     },
-    async getOverdueTodo({
+    async getOverdueTodo ({
       commit
     }) {
       try {
@@ -435,15 +435,15 @@ export default new Vuex.Store({
         commit('SET_ISLOADING', false)
       }
     },
-    getWeeklyTodo({
+    getWeeklyTodo ({
       commit
     }) {
       commit('SET_ISLOADING', true)
       return server.get('/todo/week', {
-          headers: {
-            token: localStorage.getItem('token')
-          }
-        })
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(({
           data
         }) => {
@@ -457,7 +457,7 @@ export default new Vuex.Store({
           })
         })
     },
-    updateTodo({
+    updateTodo ({
       state,
       dispatch
     }) {
@@ -466,14 +466,14 @@ export default new Vuex.Store({
         url = `/project/${state.editTodo.projectId}/todo/${state.editTodo._id}`
       }
       server.put(url, {
-          title: state.editTodo.title,
-          dueDate: new Date(`${state.editTodo.date} ${state.editTodo.time}`),
-          description: state.editTodo.description
-        }, {
-          headers: {
-            token: localStorage.getItem('token')
-          }
-        })
+        title: state.editTodo.title,
+        dueDate: new Date(`${state.editTodo.date} ${state.editTodo.time}`),
+        description: state.editTodo.description
+      }, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(({
           data
         }) => {
@@ -481,7 +481,7 @@ export default new Vuex.Store({
             'Updated!',
             `${data.message}`,
             'success'
-          )          
+          )
         })
         .catch(err => {
           Swal.fire({
@@ -490,14 +490,14 @@ export default new Vuex.Store({
             text: err.response.data.message
           })
         })
-        .finally(()=> {
+        .finally(() => {
           dispatch('getOverdueTodo')
           dispatch('getTodayList')
           dispatch('getWeeklyTodo')
           dispatch('getCompletedTodo')
         })
     },
-    deleteTodo({
+    deleteTodo ({
       dispatch
     }, todo) {
       Swal.fire({
@@ -511,10 +511,10 @@ export default new Vuex.Store({
       }).then(function (result) {
         if (result.value) {
           server.delete(`/todo/${todo._id}`, {
-              headers: {
-                token: localStorage.getItem('token')
-              }
-            })
+            headers: {
+              token: localStorage.getItem('token')
+            }
+          })
             .then(({
               data
             }) => {
@@ -527,7 +527,6 @@ export default new Vuex.Store({
               dispatch('getTodayList')
               dispatch('getWeeklyTodo')
               dispatch('getCompletedTodo')
-
             })
             .catch(err => {
               Swal.fire({
@@ -539,7 +538,7 @@ export default new Vuex.Store({
         }
       })
     },
-    addTodo({
+    addTodo ({
       dispatch
     }, payload) {
       server
@@ -569,7 +568,7 @@ export default new Vuex.Store({
           )
         })
     },
-    updateTodoStatus({
+    updateTodoStatus ({
       dispatch
     }, payload) {
       let {
@@ -586,12 +585,12 @@ export default new Vuex.Store({
         url = `/project/${payload.projectId}/status/${payload._id}`
       }
       server.patch(url, {
-          status: update
-        }, {
-          headers: {
-            token: localStorage.getItem('token')
-          }
-        })
+        status: update
+      }, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(({
           data
         }) => {
@@ -627,15 +626,15 @@ export default new Vuex.Store({
           })
         })
     },
-    getTodayList({
+    getTodayList ({
       commit
     }) {
       commit('SET_ISLOADING', true)
       return server.get('/todo', {
-          headers: {
-            token: localStorage.getItem('token')
-          }
-        })
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(({
           data
         }) => {

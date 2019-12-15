@@ -269,11 +269,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
-import CreateProjectModal from "@/components/CreateProjectModal.vue";
-import AddTodoToProject from "@/components/AddTodoToProject.vue";
-import UpdataProjectModal from "@/components/UpdataProjectModal.vue";
+import { mapState } from 'vuex'
+import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
+import CreateProjectModal from '@/components/CreateProjectModal.vue'
+import AddTodoToProject from '@/components/AddTodoToProject.vue'
+import UpdataProjectModal from '@/components/UpdataProjectModal.vue'
 
 export default {
   components: {
@@ -282,62 +282,62 @@ export default {
     CreateProjectModal,
     UpdataProjectModal
   },
-  name: "Todo",
+  name: 'Todo',
   computed: {
     ...mapState([
-      "projects",
-      "isLoading",
-      "newMembers",
-      "isSearchingMember",
-      "loggedUser"
+      'projects',
+      'isLoading',
+      'newMembers',
+      'isSearchingMember',
+      'loggedUser'
     ])
   },
-  data() {
+  data () {
     return {
-      newMember: ""
-    };
-  },
-  methods: {
-    async quitProject(project) {
-      await this.$store.dispatch("quitProject", project);
-    },
-    async removeMember(memberId, projectId) {
-      await this.$store.dispatch("removeMemberFromProject", {
-        memberId,
-        projectId
-      });
-    },
-    async addMember(memberId, projectId) {
-      this.newMember = "";
-      await this.$store.dispatch("addMemberToProject", { memberId, projectId });
-    },
-    async findMember() {
-      await this.$store.dispatch("findMember", this.newMember);
-    },
-    async deleteProject(project) {
-      await this.$store.dispatch("deleteProject", project);
-    },
-    showAddTodoToProject(project) {
-      this.$store.commit("SET_ADD_TODO_TO_PROJECT", project);
-    },
-    showEditModal(todo) {
-      this.$store.commit("SET_EDIT_TODO", todo);
-    },
-    getTodoToday() {
-      this.$store.dispatch("getTodayList");
-    },
-    async completeTodoProject(todo) {
-      await this.$store.dispatch("updateTodoStatus", todo);
-    },
-    async deleteTodoProject(todo) {
-      await this.$store.dispatch("deleteTodoProject", todo);
-    },
-    async updateTodo(todo) {
-      await this.$store.dispatch("updateTodo", todo);
+      newMember: ''
     }
   },
-  created() {}
-};
+  methods: {
+    async quitProject (project) {
+      await this.$store.dispatch('quitProject', project)
+    },
+    async removeMember (memberId, projectId) {
+      await this.$store.dispatch('removeMemberFromProject', {
+        memberId,
+        projectId
+      })
+    },
+    async addMember (memberId, projectId) {
+      this.newMember = ''
+      await this.$store.dispatch('addMemberToProject', { memberId, projectId })
+    },
+    async findMember () {
+      await this.$store.dispatch('findMember', this.newMember)
+    },
+    async deleteProject (project) {
+      await this.$store.dispatch('deleteProject', project)
+    },
+    showAddTodoToProject (project) {
+      this.$store.commit('SET_ADD_TODO_TO_PROJECT', project)
+    },
+    showEditModal (todo) {
+      this.$store.commit('SET_EDIT_TODO', todo)
+    },
+    getTodoToday () {
+      this.$store.dispatch('getTodayList')
+    },
+    async completeTodoProject (todo) {
+      await this.$store.dispatch('updateTodoStatus', todo)
+    },
+    async deleteTodoProject (todo) {
+      await this.$store.dispatch('deleteTodoProject', todo)
+    },
+    async updateTodo (todo) {
+      await this.$store.dispatch('updateTodo', todo)
+    }
+  },
+  created () {}
+}
 </script>
 
 <style scoped>

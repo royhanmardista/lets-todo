@@ -5,7 +5,7 @@
           <span class="h3 pr-1" style="font-family: 'Abril Fatface', cursive;">Completed Tasks</span>
           <span class="text-seconday" style="font-size:0.7rem">{{moment().format("dddd, MMMM Do YYYY")}}</span>
         </div>
-      <div>        
+      <div>
       </div>
     </div>
     <CompletedTodo></CompletedTodo>

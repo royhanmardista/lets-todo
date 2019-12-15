@@ -98,41 +98,41 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import UpdateTodoModal from "@/components/UpdateTodoModal.vue";
+import { mapState } from 'vuex'
+import UpdateTodoModal from '@/components/UpdateTodoModal.vue'
 
 export default {
   components: {
     UpdateTodoModal
   },
-  name: "completed",
+  name: 'completed',
   computed: {
-    ...mapState(["completedTodos", "isLoading"])
+    ...mapState(['completedTodos', 'isLoading'])
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    showEditModal(todo) {
-      this.$store.commit("SET_EDIT_TODO", todo);
+    showEditModal (todo) {
+      this.$store.commit('SET_EDIT_TODO', todo)
     },
-    getCompletedTodo() {
-      this.$store.dispatch("getCompletedTodo");
+    getCompletedTodo () {
+      this.$store.dispatch('getCompletedTodo')
     },
-    async completeTodo(todo) {
-      await this.$store.dispatch("updateTodoStatus", todo);
+    async completeTodo (todo) {
+      await this.$store.dispatch('updateTodoStatus', todo)
     },
-    async deleteTodo(todo) {
-      await this.$store.dispatch("deleteTodo", todo);
+    async deleteTodo (todo) {
+      await this.$store.dispatch('deleteTodo', todo)
     },
-    async updateTodo(todo) {
-      await this.$store.dispatch("updateTodo", todo);
+    async updateTodo (todo) {
+      await this.$store.dispatch('updateTodo', todo)
     }
   },
-  created() {
-    this.getCompletedTodo();
-  },  
-};
+  created () {
+    this.getCompletedTodo()
+  }
+}
 </script>
 
 <style>

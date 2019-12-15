@@ -131,7 +131,7 @@ a.router-link-exact-active {
 
 #display {
   min-height: 600px;
-  padding: 0px; 
+  padding: 0px;
 }
 
 a {

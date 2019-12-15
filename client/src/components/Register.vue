@@ -81,23 +81,23 @@
 
 <script>
 // import GSignInButton from 'vue-google-signin-button'
-import server from "@/api/server.js";
-import Swal from "sweetalert2";
+import server from '@/api/server.js'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
     // GSignInButton
   },
-  data() {
+  data () {
     return {
       googleSignInParams: {
         client_id:
-          "921701842707-6i2o3c2bq7ogu6j6m4ovkh26ekuecgvv.apps.googleusercontent.com"
+          '921701842707-6i2o3c2bq7ogu6j6m4ovkh26ekuecgvv.apps.googleusercontent.com'
       },
-      email_register: "",
-      password_register: "",
-      username_register: ""
-    };
+      email_register: '',
+      password_register: '',
+      username_register: ''
+    }
   },
   methods: {
     // onSignInSuccess (googleUser) {
@@ -122,36 +122,36 @@ export default {
     // onSignInError (error) {
     //   console.log('OH NOES', error)
     // },
-    register() {
+    register () {
       server
-        .post("/register", {
+        .post('/register', {
           username: this.username_register,
           email: this.email_register,
           password: this.password_register
         })
         .then(({ data }) => {
           Swal.fire({
-            icon: "success",
-            title: "New User Created!",
+            icon: 'success',
+            title: 'New User Created!',
             text: `${data.message}`
-          });
-          this.$router.push("/login");
+          })
+          this.$router.push('/login')
         })
         .catch(err => {
           Swal.fire(
-            "Opps ....!",
-            `${err.response.data.message.join(", ")}`,
-            "error"
-          );
-        });
+            'Opps ....!',
+            `${err.response.data.message.join(', ')}`,
+            'error'
+          )
+        })
     },
-    clearForm() {
-      this.email_register = "";
-      this.username_register = "";
-      this.password_register = "";
+    clearForm () {
+      this.email_register = ''
+      this.username_register = ''
+      this.password_register = ''
     }
   }
-};
+}
 </script>
 
 <style>

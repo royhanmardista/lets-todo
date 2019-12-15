@@ -25,24 +25,23 @@
 </template>
 
 <script>
-import FooterItem from "@/components/Footer.vue";
+import FooterItem from '@/components/Footer.vue'
 
 export default {
   components: {
     FooterItem
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    toRegisterPage() {
-      this.$router.push("/register");
+    toRegisterPage () {
+      this.$router.push('/register')
     }
   }
-};
+}
 </script>
 
 <style scoped>
-
 
 </style>
