@@ -5,7 +5,7 @@ http://letstodo.royhan-mardista.online/, I deployed both server and bucket in go
 
 ## Description
 
-this webite works similarly with todoist.com and trello.com, but only small portions of their fitures is implemented here. Basiclly an authenticated user are allowed to crate a project, add tasks to the project then invite new member to complete the project together, user can also create task without creating project.
+this webite works similarly with todoist.com and trello.com, but only a portion of their fitures is implemented here. Basically an authenticated user are allowed to crate a project, add tasks to the project then invite new member to complete the project together, user can also create task without creating project.
 
 ## API documentation
 
