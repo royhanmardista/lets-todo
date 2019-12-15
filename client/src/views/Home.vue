@@ -30,29 +30,34 @@
           <b-collapse id="side-collapse" is-nav>
             <b-navbar-nav class="d-flex flex-column ml-3">
               <b-nav-item class="mb-2">
-                <router-link to="/home/today" >
+                <router-link to="/home/today">
                   <i class="fa fa-calendar-o"></i> Today
+                  <b-badge variant="primary">{{todayList.length}}</b-badge>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
                 <router-link to="/home/week">
-                  <i class="fa fa-calendar text-success"></i> Next 7 days
+                  <i class="fa fa-calendar text-success"></i> Next Week
+                  <b-badge variant="success">{{weeklyTodos.length}}</b-badge>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
                 <router-link to="/home/overdue">
-                  <i class="fa fa-calendar-times-o text-danger"></i> Overdue Tasks
+                  <i class="fa fa-calendar-times-o text-danger"></i> Overdue
+                  <b-badge variant="danger">{{overdueTodos.length}}</b-badge>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
                 <router-link to="/home/completed">
-                  <i class="fa fa-calendar-check-o text-success"></i> Completed Tasks
+                  <i class="fa fa-calendar-check-o text-success"></i> Completed
+                  <b-badge variant="success">{{completedTodos.length}}</b-badge>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
                 <div class="d-flex justify-content-between">
                   <router-link to="/home/project">
                     <i class="fa fa-list-ul text-warning"></i> Projects
+                    <b-badge variant="warning">{{projects.length}}</b-badge>
                   </router-link>
                 </div>
                 <!-- Elements to collapse -->
@@ -71,9 +76,9 @@
 <script>
 import { mapState } from 'vuex'
 
-export default {
+export default {  
   computed: {
-    ...mapState(['isLoading', 'projects'])
+    ...mapState(['isLoading', 'projects', 'overdueTodos', 'completedTodos', 'todayList' , 'weeklyTodos'])
   },
   data () {
     return {
@@ -83,7 +88,7 @@ export default {
   methods: {
     async getAllProject () {
       await this.$store.dispatch('getAllProject')
-    },
+    },    
     logout () {
       localStorage.removeItem('token')
       this.$router.push('/')
@@ -98,6 +103,9 @@ export default {
     this.checkLoginStatus()
     this.getAllProject()
     this.$store.dispatch('findUser')
+    this.$store.dispatch('getCompletedTodo')
+    this.$store.dispatch('getOverdueTodo')
+    this.$store.dispatch('getWeeklyTodo')
   }
 }
 </script>
@@ -109,7 +117,7 @@ export default {
 }
 
 .addproject:hover {
-  color: gold
+  color: gold;
 }
 
 #logoutbutton:hover {
@@ -136,6 +144,6 @@ a.router-link-exact-active {
 
 a {
   color: rgb(26, 92, 236);
-  font-weight: 500
+  font-weight: 500;
 }
 </style>
