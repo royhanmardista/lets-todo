@@ -19,7 +19,8 @@
                 <p
                   class="text-center"
                   style="font-family: 'Abril Fatface', cursive;"
-                >“Until we can manage time, we can manage nothing else.” – Peter Drucker.</p>
+                >“Don’t waste your time in anger, regrets, worries, and grudges. Life is too short to be unhappy.”
+― Roy T. Bennett</p>
               </div>
             </div>
           </div>
