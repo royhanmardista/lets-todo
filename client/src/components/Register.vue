@@ -49,12 +49,13 @@
                 <button type="submit" class="btn btn-warning btn-sm btn-block mt-2">Register</button>
               </div>
             </form>
-            <p class="text-center text-white mt-2">or you can login using:</p>
+            <p class="text-center text-dark mt-2">or you can login using:</p>
             <!-- google button -->
-            <!-- <div class="row mt-2">
+            <!-- <div class="row mt-2"> -->
             <template>
               <g-signin-button
-                class="btn btn-block btn-outline-dark mx-3"
+                name="google"
+                class="btn btn-block btn-outline-dark"
                 :params="googleSignInParams"
                 @success="onSignInSuccess"
                 @error="onSignInError"
@@ -63,7 +64,7 @@
                 Sign in with Google
               </g-signin-button>
             </template>
-            </div>-->
+            <!-- </div> -->
             <!-- google button end -->
             <p class="text-justify mt-2 text-dark" style="font-size:0.7rem">
               If you continue with Google and don't already have a Let's Todo account, you are creating an account and you agree to our
@@ -80,78 +81,76 @@
 </template>
 
 <script>
-// import GSignInButton from 'vue-google-signin-button'
-import server from '@/api/server.js'
-import Swal from 'sweetalert2'
+import GSignInButton from "vue-google-signin-button";
+import server from "@/api/server.js";
+import Swal from "sweetalert2";
 
 export default {
   components: {
-    // GSignInButton
+    GSignInButton
   },
-  data () {
+  data() {
     return {
       googleSignInParams: {
         client_id:
-          '921701842707-6i2o3c2bq7ogu6j6m4ovkh26ekuecgvv.apps.googleusercontent.com'
+          "628697528399-tm5hqkb025uttnahfoj889flu2jg3hvm.apps.googleusercontent.com"
       },
-      email_register: '',
-      password_register: '',
-      username_register: ''
-    }
+      email_register: "",
+      password_register: "",
+      username_register: ""
+    };
   },
   methods: {
-    // onSignInSuccess (googleUser) {
-    //   console.log('masuk login google')
-    //   server
-    //     .post('/login-google', {
-    //       google_token: id_token
-    //     })
-    //     .then(({ data }) => {
-    //       console.log(data, 'dapat data')
-    //       localStorage.setItem('token', data.token)
-    //       this.toHome(data)
-    //     })
-    //     .catch(err => {
-    //       Swal.fire(
-    //         'Opps ....!',
-    //         `${err.response.data.message}`,
-    //         'error'
-    //       )
-    //     })
-    // },
-    // onSignInError (error) {
-    //   console.log('OH NOES', error)
-    // },
-    register () {
+    onSignInSuccess(googleUser) {
+      let profile = googleUser.getBasicProfile();
+      let id_token = googleUser.getAuthResponse().id_token
       server
-        .post('/register', {
+        .post("/login-google", {
+          google_token: id_token
+        })
+        .then(({ data }) => {
+          localStorage.setItem("token", data.token)
+          Swal.fire('Loggin Success!', `${data.message}`, 'success')
+          this.$store.commit('SET_LOGGED_USER', data.user)
+          this.$router.push('/home')
+        })
+        .catch(err => {
+          Swal.fire("Opps ....!", `${err.response.data.message}`, "error");
+        });
+    },
+    onSignInError(error) {
+      console.log("OH NOES", error);
+    },
+    register() {
+      server
+        .post("/register", {
           username: this.username_register,
           email: this.email_register,
           password: this.password_register
         })
         .then(({ data }) => {
           Swal.fire({
-            icon: 'success',
-            title: 'New User Created!',
+            icon: "success",
+            title: "New User Created!",
             text: `${data.message}`
-          })
-          this.$router.push('/login')
+          });
+          this.$router.push("/login");
         })
         .catch(err => {
           Swal.fire(
-            'Opps ....!',
-            `${err.response.data.message.join(', ')}`,
-            'error'
-          )
-        })
+            "Opps ....!",
+            `${err.response.data.message.join(", ")}`,
+            "error"
+          );
+        });
     },
-    clearForm () {
-      this.email_register = ''
-      this.username_register = ''
-      this.password_register = ''
+    clearForm() {
+      this.email_register = "";
+      this.username_register = "";
+      this.password_register = "";
     }
   }
-}
+};
 </script>
 
 <style>
