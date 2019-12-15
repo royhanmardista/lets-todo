@@ -102,7 +102,6 @@ export default {
   },
   methods: {
     onSignInSuccess (googleUser) {
-      let profile = googleUser.getBasicProfile()
       let idToken = googleUser.getAuthResponse().id_token
       server
         .post('/login-google', {

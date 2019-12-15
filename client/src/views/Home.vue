@@ -38,7 +38,7 @@
               <b-nav-item class="mb-2">
                 <router-link to="/home/week">
                   <i class="fa fa-calendar text-success"></i> Next Week
-                  <b-badge variant="success">{{weeklyTodos.length}}</b-badge>
+                  <b-badge variant="success">{{weeklyTodos.total}}</b-badge>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="mb-2">
@@ -96,12 +96,11 @@ export default {
     async getAllProject () {
       await this.$store.dispatch('getAllProject')
     },
-    logout () {
+    async logout () {
       localStorage.removeItem('token')
-      let auth2 = gapi.auth2.getAuthInstance()
-      auth2.signOut().then(function () {
-        this.$router.push('/')
-      })
+      let auth2 = await gapi.auth2.getAuthInstance()
+      auth2.signOut().then(function () {})
+      this.$router.push('/')
     },
     checkLoginStatus () {
       if (!localStorage.getItem('token')) {

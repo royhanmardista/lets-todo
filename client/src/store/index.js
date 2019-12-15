@@ -29,7 +29,12 @@ export default new Vuex.Store({
       state.overdueTodos = payload
     },
     SET_WEEK_LIST (state, payload) {
+      let total = 0
+      for (let i = 0; i < payload.length; i++) {
+        total += payload[i].todos.length
+      }
       state.weeklyTodos = payload
+      state.weeklyTodos.total = total
       state.isLoading = false
     },
     SET_LOGGED_USER (state, user) {
